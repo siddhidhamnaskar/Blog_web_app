@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,19 +14,18 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useEffect,useState } from 'react';
-const pages = [];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { UserContext } from './Usercontext';
+
+const pages = ['CREATE A POST+'];
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
+  const {userInfo,setUserInfo} =React.useContext(UserContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const [userName,setUserName]=useState("");
-  const [email,setEmail]=useState("");
-
-  const logout=()=>{
-    
-  }
+ 
+  const navigate=useNavigate();
 
  useEffect(()=>{
      fetch("http://localhost:3046/profile",{
@@ -34,11 +33,26 @@ function ResponsiveAppBar() {
      })
      .then((res)=>{
        res.json().then((info)=>{
-         setUserName(info.Name);
-         setEmail(info.Email);
+       
+         setUserInfo(info.Name);
+       
+       })
+       .catch((err)=>{
+        setUserInfo(null);
+        console.log("Error");
        })
      })
-    },[])
+    },[userInfo])
+
+    const logout=()=>{
+      fetch('http://localhost:3046/logout',{
+        credentials:'include',
+        method:'POST',
+      })
+      setUserInfo(null);
+       navigate("/login")
+
+    }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -109,7 +123,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" color="black">{page}</Typography>
+                  {userInfo ?   <Link to="/createpost" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
                 </MenuItem>
               ))}
             </Menu>
@@ -119,7 +133,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -131,7 +145,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            MY BLOG
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -140,18 +154,19 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
-                {page}
+                  {userInfo ?   <Link to="/createpost" style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {userName==="" ? <>
-            <Link >Login</Link>
-            <Link >Signup</Link>
+            {!userInfo ? <>
+            <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px"}} >Login</Link>   
+         
+            <Link to="/signup" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none"}}>Register</Link>
               
             </>:<> 
-            <Link style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE A BLOG +</Link> 
+          
             <Tooltip title="Open settings">
           
             
@@ -175,11 +190,14 @@ function ResponsiveAppBar() {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-              <Typography textAlign="center">{setting}</Typography>
+         
+            <MenuItem onClick={handleCloseUserMenu} style={{display:"flex" ,flexDirection:"column"}}>
+              <Typography key="Profile" textAlign="center">Profile</Typography>
+              <br/>
+              <Typography key="Logout" textAlign="center" onClick={logout}>Logout</Typography>
+           
             </MenuItem>
-          ))}
+          
         </Menu>
             </>}
          

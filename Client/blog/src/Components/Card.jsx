@@ -6,32 +6,32 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
+import {formatISO9075} from "date-fns";
+import { Link } from 'react-router-dom';
 
-export default function MediaCard() {
+export default function MediaCard({Title,Summary,Content,Cover,createdAt,updatedAt,Author,_id}) {
+
+ 
   return (
-    <Paper elevation={20} sx={{ maxWidth: 345, marginTop:"30px" }}>
-    <Card sx={{ maxWidth: 345, marginTop:"30px" }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image="/static/images/cards/contemplative-reptile.jpg"
-        title="green iguana"
-      />
+    <Paper elevation={20} sx={{width:"360px",margin:"auto", marginTop:"30px" }} >
+    <Card sx={{width:"360px",margin:"auto", marginTop:"0px" }} >
+    
+      <img src={`http://localhost:3046/${Cover}`} style={{width:"100%",height:"200px"}}></img>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {Title}
         </Typography>
         <Typography>
-          <a>Author Name</a>
-          <time>2023/10/4 12:23</time>
+          <a href=''>{Author.Name}</a>
+          <time>{formatISO9075(new Date(createdAt))}</time>
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+         {Summary}
         </Typography>
       </CardContent>
       <CardActions>
         <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+       <Link to={`/details/${_id}`}><Button size="small">Learn More</Button></Link> 
       </CardActions>
     </Card>
     </Paper>
