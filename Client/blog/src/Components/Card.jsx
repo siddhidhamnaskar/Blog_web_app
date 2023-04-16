@@ -16,7 +16,7 @@ export default function MediaCard({Title,Summary,Content,Cover,createdAt,updated
     <Paper elevation={20} sx={{width:"360px",margin:"auto", marginTop:"30px" }} >
     <Card sx={{width:"360px",margin:"auto", marginTop:"0px" }} >
     
-     <Link to={`/details/${_id}`}> <img src={`http://localhost:3046/${Cover}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
+     <Link to={`/details/${_id}`}> <img src={`https://blog-app-3ke4.onrender.com/${Cover}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {Title}

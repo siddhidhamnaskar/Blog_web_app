@@ -28,7 +28,7 @@ export default function Login(){
 
   const login=(e)=>{
     e.preventDefault();
-     fetch("http://localhost:3046/login",{
+     fetch("https://blog-app-3ke4.onrender.com/login",{
       method:"POST",
       headers:{
         "Content-Type":"application/json"

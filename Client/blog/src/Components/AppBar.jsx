@@ -28,7 +28,7 @@ function ResponsiveAppBar() {
   const navigate=useNavigate();
 
  useEffect(()=>{
-     fetch("http://localhost:3046/profile",{
+     fetch("https://blog-app-3ke4.onrender.com/profile",{
       credentials:'include'
      })
      .then((res)=>{
@@ -45,7 +45,7 @@ function ResponsiveAppBar() {
     },[])
 
     const logout=()=>{
-      fetch('http://localhost:3046/logout',{
+      fetch('https://blog-app-3ke4.onrender.com/logout',{
         credentials:'include',
         method:'POST',
       })

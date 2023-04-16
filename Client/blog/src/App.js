@@ -9,7 +9,7 @@ function App() {
   const [data ,setData]=useState([]);
     
   useEffect(()=>{
-    fetch('http://localhost:3046/blogs')
+    fetch('https://blog-app-3ke4.onrender.com/blogs')
     .then((res)=>res.json())
     .then((json)=>setData(json))
     .catch((err)=>console.log("Error"));
