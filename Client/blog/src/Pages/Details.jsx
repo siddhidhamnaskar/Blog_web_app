@@ -15,7 +15,7 @@ export default function Details(){
 //   console.log(userInfo, data);
   useEffect(()=>{
 
-     fetch(`https://blog-app-3ke4.onrender.com/${id}`)
+     fetch(`http://localhost:3046/blogs/${id}`)
      .then((res)=>{
         res.json().then((json)=>{setData(json)});
      })
@@ -56,7 +56,7 @@ export default function Details(){
         userInfo && userInfo.id==data.Author._id ? <Link to={`/edit/${id}`} style={{textAlign:"right"}}>Edit</Link>:null
        }
       
-      <img onClick={print} src={`https://blog-app-3ke4.onrender.com/${data.Cover}`} style={{width:"100%" ,height:"400px"}}></img>
+      <img onClick={print} src={`http://localhost:3046/${data.Cover}`} style={{width:"100%" ,height:"400px"}}></img>
       
       <h2>Content:</h2>
       <div dangerouslySetInnerHTML={{__html:data.Content}}/>

@@ -22,7 +22,7 @@ export default function CreatePost(){
       data.set('content',content);
   
       console.log(file[0]);
-      fetch("https://blog-app-3ke4.onrender.com/post",{
+      fetch("http://localhost:3046/post",{
         method:"POST",
          body:data,
          credentials:'include'

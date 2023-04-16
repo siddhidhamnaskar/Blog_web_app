@@ -13,8 +13,9 @@ const multer=require('multer');
 const uploadMiddelwares=multer({dest:'uploads/'})
 const PORT=3046;
 const fs =require('fs');
-const { AsyncLocalStorage } = require("async_hooks");
-app.use(cors({credentials:true,origin:"https://stunning-cat-2d77e2.netlify.app"}));
+// const { AsyncLocalStorage } = require("async_hooks");
+// app.use(cors());
+app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));

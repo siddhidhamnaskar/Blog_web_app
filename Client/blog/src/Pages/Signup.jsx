@@ -12,7 +12,7 @@ export default function Signup(){
     const navigate=useNavigate();
     const register=()=>{
       try{
-        fetch("https://blog-app-3ke4.onrender.com/signup",{
+        fetch("http://localhost:3046/signup",{
           method:"POST",
           headers:{
             "Content-Type":"application/json"

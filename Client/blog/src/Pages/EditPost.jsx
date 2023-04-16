@@ -44,7 +44,7 @@ export default function EditPost(){
       }
   
       console.log(file[0]);
-      fetch(`https://blog-app-3ke4.onrender.com/edit/${id}`,{
+      fetch(`http://localhost:3046/edit/${id}`,{
         method:"Put",
          body:data,
          credentials:'include'
