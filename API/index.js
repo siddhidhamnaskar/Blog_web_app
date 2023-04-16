@@ -84,7 +84,7 @@ app.get('/profile',async(req,res)=>{
     const {token}=req.cookies;
     jwt.verify(token ,secret,{},(err,info)=>{
         if(err) throw err;
-        res.json(info);
+        res.json("ok");
 
     })
   }
