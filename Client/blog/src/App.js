@@ -22,6 +22,7 @@ function App() {
     <div id="cardcontainer">
   
       {data.map((elem)=>{
+      
          return <MediaCard key={elem._id} {...elem}/>
          
 

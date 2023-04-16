@@ -33,23 +33,23 @@ function ResponsiveAppBar() {
      })
      .then((res)=>{
        res.json().then((info)=>{
-       
-         setUserInfo(info.Name);
+        //  console.log(info);
+         setUserInfo(info);
        
        })
        .catch((err)=>{
-        setUserInfo(null);
+        setUserInfo({Email:"",Name:"",id:""});
         console.log("Error");
        })
      })
-    },[userInfo])
+    },[])
 
     const logout=()=>{
       fetch('http://localhost:3046/logout',{
         credentials:'include',
         method:'POST',
       })
-      setUserInfo(null);
+      setUserInfo({Email:"",Name:"",id:""});
        navigate("/login")
 
     }
@@ -123,7 +123,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {userInfo ?   <Link to="/createpost" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
+                  {userInfo.Name?   <Link to="/createpost" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
                 </MenuItem>
               ))}
             </Menu>
@@ -154,13 +154,13 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
-                  {userInfo ?   <Link to="/createpost" style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
+                  {userInfo.Name ?   <Link to="/createpost" style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {!userInfo ? <>
+             {!userInfo.Name ? <>
             <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px"}} >Login</Link>   
          
             <Link to="/signup" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none"}}>Register</Link>
@@ -200,7 +200,7 @@ function ResponsiveAppBar() {
           
         </Menu>
             </>}
-         
+          
      
           </Box>
         </Toolbar>

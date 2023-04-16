@@ -13,6 +13,7 @@ const multer=require('multer');
 const uploadMiddelwares=multer({dest:'uploads/'})
 const PORT=3046;
 const fs =require('fs');
+const { AsyncLocalStorage } = require("async_hooks");
 app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 app.use(cookieParser());
@@ -142,6 +143,46 @@ app.get("/blogs",async(req,res)=>{
     res.status(505).json(err);
   }
  
+
+})
+
+app.get("/blogs/:id",async(req,res)=>{
+  try{
+    const blog=await Post.findById(req.params.id).populate('Author',['Name']);
+    res.json(blog);
+
+  }
+  catch(err){
+    res.status(505).json(err);
+  }
+})
+
+app.put("/edit/:id",uploadMiddelwares.single('file'),async(req,res)=>{
+  try{
+    const blog=await Post.findById(req.params.id).populate('Author',['Name']);
+     blog.Title=req.body.title;
+     blog.Summary=req.body.summary;
+     blog.Content=req.body.content;
+     if(req.file)
+     {
+      const {originalname,path}=req.file;
+      const parts=originalname.split('.');
+      const ext=parts[parts.length-1];
+      const newPath=path+"."+ext;
+      fs.renameSync(path,newPath);
+      blog.Cover=newPath;
+
+     }
+
+
+     const post=await blog.save();
+     res.status(200).json(post);
+
+
+  }
+  catch(err){
+
+  }
 
 })
 

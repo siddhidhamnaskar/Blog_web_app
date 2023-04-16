@@ -5,7 +5,8 @@ import App from "../App";
 import Login from "../Pages/Login";
 import Signup from "../Pages/Signup";
 import CreatePost from "../Pages/CreatePost";
-import Details from "./Details";
+import Details from "../Pages/Details";
+import EditPost from "../Pages/EditPost";
 export default function Allroutes(){
     return <>
     <Routes>
@@ -14,6 +15,7 @@ export default function Allroutes(){
         <Route path="/signup" element={<Signup/>}></Route>
         <Route path="/createpost" element={<CreatePost/>}></Route>
         <Route path="/details/:id" element={<Details/>}></Route>
+        <Route path="/edit/:id" element={<EditPost/>}></Route>
 
     </Routes>
     </>
