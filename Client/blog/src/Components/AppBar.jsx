@@ -34,6 +34,7 @@ function ResponsiveAppBar() {
      .then((res)=>{
        res.json().then((info)=>{
         //  console.log(info);
+        console.log(info);
          setUserInfo(info);
        
        })
