@@ -15,7 +15,7 @@ const uploadMiddelwares=multer({dest:'uploads/'})
 const fs =require('fs');
 const dotenv=require("dotenv");
 dotenv.config();
-const PORT=process.env.PORT;
+const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
  app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
