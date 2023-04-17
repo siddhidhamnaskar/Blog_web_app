@@ -1,9 +1,10 @@
-
+const dotenv=require("dotenv");
+dotenv.config();
 
 const mongoose=require("mongoose");
 
 const connection=async()=>{
-   await mongoose.connect("mongodb+srv://siddhidh:m8mmQvZq!kLf.Wm@cluster0.99gdmwu.mongodb.net/?retryWrites=true&w=majority");
+   await mongoose.connect(process.env.MONGODB_URL);
 }
 
 module.exports=connection;

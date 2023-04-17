@@ -8,19 +8,21 @@ const Post=require("./models/post.js")
 const bcrypt=require("bcryptjs");
 const cookieParser=require("cookie-parser");
 const jwt=require("jsonwebtoken");
-const secret="ncohcfueihmscnkjfowrjodwdmnxsm";
+
 const multer=require('multer');
 const uploadMiddelwares=multer({dest:'uploads/'})
-const PORT=3046;
+
 const fs =require('fs');
-// const { AsyncLocalStorage } = require("async_hooks");
-//  app.use(cors());
+const dotenv=require("dotenv");
+dotenv.config();
+const PORT=process.env.PORT;
+const secret=process.env.SECRET;
  app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
-// console.log(process.env.PORT);
+
 app.post("/signup",async(req,res)=>{
     try{
         const salt=await bcrypt.genSalt(8);
@@ -84,7 +86,7 @@ app.get('/profile',async(req,res)=>{
     const {token}=req.cookies;
     jwt.verify(token ,secret,{},(err,info)=>{
         if(err) throw err;
-        res.json("ok");
+        res.json(info);
 
     })
   }

@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Components/Usercontext";
+import { base_url } from "../Sevices/API";
 export default function CreatePost(){
   const {userInfo,setUserInfo} =React.useContext(UserContext);
    const [title, setTitle]=useState("");
@@ -22,7 +23,7 @@ export default function CreatePost(){
       data.set('content',content);
   
       console.log(file[0]);
-      fetch("http://localhost:3046/post",{
+      fetch(`${base_url}/post`,{
         method:"POST",
          body:data,
          credentials:'include'

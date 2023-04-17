@@ -16,8 +16,12 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useEffect,useState } from 'react';
 import { UserContext } from './Usercontext';
 
+import { base_url } from '../Sevices/API';
+
+
 const pages = ['CREATE A POST+'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 function ResponsiveAppBar() {
   const {userInfo,setUserInfo} =React.useContext(UserContext);
@@ -26,9 +30,10 @@ function ResponsiveAppBar() {
 
  
   const navigate=useNavigate();
+  
 
  useEffect(()=>{
-     fetch("http://localhost:3046/profile",{
+     fetch(`${base_url}/profile`,{
       credentials:'include'
      })
      .then((res)=>{
@@ -46,7 +51,7 @@ function ResponsiveAppBar() {
     },[])
 
     const logout=()=>{
-      fetch('http://localhost:3046/logout',{
+      fetch(`${base_url}/logout`,{
         credentials:'include',
         method:'POST',
       })

@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../Components/Usercontext";
+import { base_url } from "../Sevices/API";
 export default function EditPost(){
     const {id}=useParams();
   const {userInfo,setUserInfo} =React.useContext(UserContext);
@@ -17,7 +18,7 @@ export default function EditPost(){
 
    useEffect(()=>{
 
-    fetch(`http://localhost:3046/blogs/${id}`)
+    fetch(`${base_url}/blogs/${id}`)
     .then((res)=>{
        res.json().then((json)=>{
         console.log(json.Title);
@@ -44,7 +45,7 @@ export default function EditPost(){
       }
   
       console.log(file[0]);
-      fetch(`http://localhost:3046/edit/${id}`,{
+      fetch(`${base_url}/edit/${id}`,{
         method:"Put",
          body:data,
          credentials:'include'

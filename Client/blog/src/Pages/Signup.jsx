@@ -4,6 +4,7 @@ import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
+import { base_url } from "../Sevices/API";
 export default function Signup(){
     // const [data,setData]=useState([]);
     const [userData, setUserData]=useState({Name:"",Email:"",Password:""});
@@ -12,7 +13,7 @@ export default function Signup(){
     const navigate=useNavigate();
     const register=()=>{
       try{
-        fetch("http://localhost:3046/signup",{
+        fetch(`${base_url}/signup`,{
           method:"POST",
           headers:{
             "Content-Type":"application/json"

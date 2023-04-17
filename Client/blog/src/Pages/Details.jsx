@@ -6,6 +6,7 @@ import { useContext, useEffect,useState } from "react";
 import {formatISO9075} from "date-fns";
 import { UserContext } from "../Components/Usercontext";
 import { Link } from "react-router-dom";
+import { base_url } from "../Sevices/API";
 export default function Details(){
     const {userInfo} =useContext(UserContext);
   
@@ -15,7 +16,7 @@ export default function Details(){
 //   console.log(userInfo, data);
   useEffect(()=>{
 
-     fetch(`http://localhost:3046/blogs/${id}`)
+     fetch(`${base_url}/blogs/${id}`)
      .then((res)=>{
         res.json().then((json)=>{setData(json)});
      })
@@ -56,7 +57,7 @@ export default function Details(){
         userInfo && userInfo.id==data.Author._id ? <Link to={`/edit/${id}`} style={{textAlign:"right"}}>Edit</Link>:null
        }
       
-      <img onClick={print} src={`http://localhost:3046/${data.Cover}`} style={{width:"100%" ,height:"400px"}}></img>
+      <img onClick={print} src={`${base_url}/${data.Cover}`} style={{width:"100%" ,height:"400px"}}></img>
       
       <h2>Content:</h2>
       <div dangerouslySetInnerHTML={{__html:data.Content}}/>

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
 import {formatISO9075} from "date-fns";
 import { Link } from 'react-router-dom';
+import { base_url } from '../Sevices/API';
 
 export default function MediaCard({Title,Summary,Content,Cover,createdAt,updatedAt,Author,_id}) {
 
@@ -16,7 +17,7 @@ export default function MediaCard({Title,Summary,Content,Cover,createdAt,updated
     <Paper elevation={20} sx={{width:"360px",margin:"auto", marginTop:"30px" }} >
     <Card sx={{width:"360px",margin:"auto", marginTop:"0px" }} >
     
-     <Link to={`/details/${_id}`}> <img src={`http://localhost:3046/${Cover}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
+     <Link to={`/details/${_id}`}> <img src={`${base_url}/${Cover}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {Title}

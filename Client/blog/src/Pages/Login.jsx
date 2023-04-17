@@ -4,6 +4,7 @@ import { Paper, TextField, Typography ,Button} from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { base_url } from "../Sevices/API";
 export default function Login(){
   const [user, setUser]=useState({Email:"",Password:""});
   const  [disabled, setDisabled]=useState(true);
@@ -28,7 +29,7 @@ export default function Login(){
 
   const login=(e)=>{
     e.preventDefault();
-     fetch("http://localhost:3046/login",{
+     fetch(`${base_url}/login`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"
