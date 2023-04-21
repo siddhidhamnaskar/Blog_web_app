@@ -34,6 +34,7 @@ function ResponsiveAppBar() {
 
  useEffect(()=>{
      fetch(`${base_url}/profile`,{
+    
       credentials:'include'
      })
      .then((res)=>{
