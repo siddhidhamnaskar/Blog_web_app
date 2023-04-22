@@ -7,6 +7,7 @@ const User=require("./models/user.js");
 const Post=require("./models/post.js")
 const bcrypt=require("bcryptjs");
 const cookieParser=require("cookie-parser");
+const bodyParser = require('body-parser');
 const jwt=require("jsonwebtoken");
 
 const multer=require('multer');
@@ -20,6 +21,7 @@ const secret=process.env.SECRET;
  app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json())
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
