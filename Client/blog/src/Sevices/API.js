@@ -1,1 +1,1 @@
-export const base_url="http://localhost:3046"
+export const base_url="https://blog-app-api-asc5.onrender.com"

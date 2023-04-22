@@ -191,8 +191,7 @@ app.put("/edit/:id",uploadMiddelwares.single('file'),async(req,res)=>{
 
 })
 
-if(process.env.PORT)
-{
+
 
 
 app.listen(PORT,()=>{
@@ -205,6 +204,4 @@ app.listen(PORT,()=>{
         console.log("Error");
     }
 });
-}
 
-module.exports=app;
