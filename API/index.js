@@ -18,12 +18,12 @@ const dotenv=require("dotenv");
 dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
-
-app.use(express.json());
-app.use(bodyParser.json())
-app.use(cookieParser());
 app.use(cors({credentials:true,origin:"http://localhost:3000"}));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+// app.use(bodyParser.json())
+app.use(cookieParser());
+
+//  app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
@@ -65,10 +65,7 @@ app.post("/login",async(req,res)=>{
        {
         jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{},(err,token)=>{
             if(err) throw err;
-            res.cookie('token',token).json({
-              id:user._id,
-              Name
-            });
+            res.cookie('token',token).json("ok");
         })
        }
        else{
