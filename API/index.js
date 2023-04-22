@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(bodyParser.json())
 app.use(cookieParser());
 app.use(cors({credentials:true,origin:"http://localhost:3000"}));
-api.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
