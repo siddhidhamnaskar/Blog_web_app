@@ -65,7 +65,8 @@ app.post("/login",async(req,res)=>{
        {
         jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{},(err,token)=>{
             if(err) throw err;
-            res.cookie('token',token).json("ok");
+            localStorage.setItem('token',JSON.stringify(token));
+            res.json("ok");
         })
        }
        else{
@@ -88,7 +89,7 @@ app.post("/login",async(req,res)=>{
 
 app.get('/profile',async(req,res)=>{
   try{
-    const {token}=req.cookies;
+    const token=localStorage.getItem('token')||"";
     jwt.verify(token ,secret,{},(err,info)=>{
         if(err) throw err;
         res.json(info);
