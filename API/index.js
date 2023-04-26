@@ -19,7 +19,7 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"https://leafy-sundae-8b558b.netlify.app"}));
+ app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
