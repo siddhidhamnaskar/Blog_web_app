@@ -31,10 +31,16 @@ function ResponsiveAppBar() {
  
   const navigate=useNavigate();
   
-
+let token=localStorage.getItem('token')||"";
  useEffect(()=>{
      fetch(`${base_url}/profile`,{
-      credentials:"include"
+      method:"post",
+      headers:{
+        "Content-type":"application/json"
+      },
+      body:JSON.stringify({'token':token}),
+      credentials:'include'
+
      })
      .then((res)=>{
        res.json().then((info)=>{
@@ -55,6 +61,7 @@ function ResponsiveAppBar() {
         credentials:'include',
         method:'POST',
       })
+      localStorage.setItem('token',"");
       setUserInfo({Email:"",Name:"",id:""});
        navigate("/login")
 

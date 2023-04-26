@@ -35,11 +35,15 @@ export default function Login(){
         "Content-Type":"application/json"
       },
       body:JSON.stringify(user),
-      credentials:'include'
+      credentials:`include`
      })
      .then((res)=>{
-      alert("Login Successfull");
+       res.json().then((data)=>{
+        localStorage.setItem('token',data);
+        alert("Login Successfull");
       navigate("/");
+       })
+      
      })
      .catch((err)=>{
       alert("Login Failed");
