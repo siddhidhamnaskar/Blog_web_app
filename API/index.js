@@ -18,12 +18,13 @@ const dotenv=require("dotenv");
 dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
-app.use(cors({credentials:true,origin:"http://localhost:3000"}));
+
+ app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
  app.use(bodyParser.json())
 app.use(cookieParser());
 
-//  app.use(bodyParser.urlencoded({ extended: true }));
+//  app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use('/uploads',express.static(__dirname+'/uploads'));
 
