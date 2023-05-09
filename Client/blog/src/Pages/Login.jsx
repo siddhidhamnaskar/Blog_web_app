@@ -5,10 +5,12 @@ import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../Sevices/API";
+import CircularIndeterminate from "../Components/Loader";
+import LinearDeterminate from "../Components/progress";
 export default function Login(){
   const [user, setUser]=useState({Email:"",Password:""});
   const  [disabled, setDisabled]=useState(true);
-
+  const [load,setLoad]=useState(false);
   const navigate=useNavigate();
   useEffect(()=>{
     if(user.Email.length>0 && user.Password.length>7)
@@ -29,6 +31,7 @@ export default function Login(){
 
   const login=(e)=>{
     e.preventDefault();
+    setLoad(true);
      fetch(`${base_url}/login`,{
       method:"POST",
       headers:{
@@ -40,6 +43,7 @@ export default function Login(){
      .then((res)=>{
        res.json().then((data)=>{
         localStorage.setItem('token',data);
+        setLoad(false)
         alert("Login Successfull");
       navigate("/");
        })
@@ -83,6 +87,7 @@ export default function Login(){
 
     return<>
        <ResponsiveAppBar/>
+       {load ?<LinearDeterminate/>:null}
        <Paper elevation={20} style={paperStyle}>
         <Typography align="center" style={{paddingTop:"50px",fontSize:"23px", fontWeight:"bold"}}>LOGIN</Typography>
              <form style={formstyle}>

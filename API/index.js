@@ -19,7 +19,7 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"https://my-blog-appication.netlify.app"}));
+ app.use(cors({credentials:true,origin:"*"}));
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
@@ -120,7 +120,7 @@ app.post("/post",uploadMiddelwares.single('file') ,async(req,res)=>{
     const newPath=path+"."+ext;
     fs.renameSync(path,newPath);
 
-    const {token}=req.cookies;
+    let token=req.body.token;
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
         const blog=new Post({
@@ -198,7 +198,20 @@ app.put("/edit/:id",uploadMiddelwares.single('file'),async(req,res)=>{
 
 })
 
+// app.get("/names/:Name",async(req,res)=>{
+//   try{
+//     console.log(1);
+//     console.log(req.params);
+//     const blog=await Post.find().populate('Author',['Name'])
+//     console.log(blog);
+//     res.json(blog);
 
+//   }
+//   catch(err){
+//     res.status(505).json(err);
+//   }
+
+// })
 
 
 app.listen(PORT,()=>{

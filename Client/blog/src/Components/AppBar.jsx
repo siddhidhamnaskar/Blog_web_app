@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +14,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+
+import FreeSolo from './search';
+
 import { useEffect,useState } from 'react';
 import { UserContext } from './Usercontext';
 
@@ -21,6 +25,8 @@ import { base_url } from '../Sevices/API';
 
 const pages = ['CREATE A POST+'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+
 
 
 function ResponsiveAppBar() {
@@ -171,8 +177,10 @@ let token=localStorage.getItem('token')||"";
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
+          {userInfo.Name ? <FreeSolo/>:null}
+          
+        
+          <Box sx={{ flexGrow: 0 }} >
              {!userInfo.Name ? <>
             <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px"}} >Login</Link>   
          
@@ -180,7 +188,7 @@ let token=localStorage.getItem('token')||"";
               
             </>:<> 
           
-            <Tooltip title="Open settings">
+            <Tooltip title="Open settings" style={{marginLeft:"30px"}}>
           
             
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

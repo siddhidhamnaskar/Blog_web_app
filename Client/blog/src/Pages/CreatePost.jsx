@@ -16,11 +16,14 @@ export default function CreatePost(){
    const navigate=useNavigate();
    const postData=(e)=>{
     e.preventDefault();
+    let token=localStorage.getItem('token')||"";
+    console.log(file[0]);
       const data=new FormData();
       data.set('title',title);
       data.set('summary',summary);
       data.set('file',file[0]);
       data.set('content',content);
+      data.set('token',token);
   
       console.log(file[0]);
       fetch(`${base_url}/post`,{

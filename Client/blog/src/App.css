@@ -1,6 +1,13 @@
 ::-webkit-scrollbar{
   display: none;
 }
+#Container{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 #cardcontainer{
