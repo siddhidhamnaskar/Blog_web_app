@@ -19,7 +19,7 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"*"}));
+ app.use(cors({credentials:true,origin:"https://my-b-log-app.netlify.app"}));
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
