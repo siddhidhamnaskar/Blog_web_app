@@ -19,7 +19,7 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"https://my-blogs-appi.netlify.app"}));
+ app.use(cors({credentials:true,origin:"*"}));
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
