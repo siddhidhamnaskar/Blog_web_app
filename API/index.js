@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const jwt=require("jsonwebtoken");
 
 const multer=require('multer');
-const uploadMiddelwares=multer({dest:'uploads/'})
+// const uploadMiddelwares=multer({dest:'uploads/'})
 
 const fs =require('fs');
 const dotenv=require("dotenv");
@@ -19,14 +19,14 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"https://my-b-log-app.netlify.app"}));
+ app.use(cors({credentials:true,origin:"http://localhost:3000"}));
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
 
 //  app.use(bodyParser.urlencoded({ extended: true}));
 
-app.use('/uploads',express.static(__dirname+'/uploads'));
+// app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 app.post("/signup",async(req,res)=>{
@@ -110,15 +110,22 @@ app.post("/logout",async(req,res)=>{
    res.cookie('token'," ").json("ok");
 })
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
-app.post("/post",uploadMiddelwares.single('file') ,async(req,res)=>{
+const upload = multer({ storage: storage });
+
+
+app.post("/post",upload.single('file') ,async(req,res)=>{
 
   try{
-    const {originalname,path}=req.file;
-    const parts=originalname.split('.');
-    const ext=parts[parts.length-1];
-    const newPath=path+"."+ext;
-    fs.renameSync(path,newPath);
+   
 
     let token=req.body.token;
     jwt.verify(token ,secret,{},async(err,info)=>{
@@ -126,7 +133,10 @@ app.post("/post",uploadMiddelwares.single('file') ,async(req,res)=>{
         const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
-          Cover:newPath,
+          img: {
+            data: fs.readFileSync("uploads/" + req.file.filename),
+            contentType: "image/png",
+          },
           Content:req.body.content,
           Author:info.id
         })
@@ -169,7 +179,7 @@ app.get("/blogs/:id",async(req,res)=>{
   }
 })
 
-app.put("/edit/:id",uploadMiddelwares.single('file'),async(req,res)=>{
+app.put("/edit/:id",upload.single('file'),async(req,res)=>{
   try{
     const blog=await Post.findById(req.params.id).populate('Author',['Name']);
      blog.Title=req.body.title;
@@ -177,12 +187,11 @@ app.put("/edit/:id",uploadMiddelwares.single('file'),async(req,res)=>{
      blog.Content=req.body.content;
      if(req.file)
      {
-      const {originalname,path}=req.file;
-      const parts=originalname.split('.');
-      const ext=parts[parts.length-1];
-      const newPath=path+"."+ext;
-      fs.renameSync(path,newPath);
-      blog.Cover=newPath;
+     
+      blog.img={
+        data: fs.readFileSync("uploads/" + req.file.filename),
+        contentType: "image/png",
+      }
 
      }
 

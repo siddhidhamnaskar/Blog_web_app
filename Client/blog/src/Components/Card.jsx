@@ -8,16 +8,28 @@ import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
 import {formatISO9075} from "date-fns";
 import { Link } from 'react-router-dom';
-import { base_url } from '../Sevices/API';
+import { useState,useEffect } from 'react';
+// import { base_url } from '../Sevices/API';
 
-export default function MediaCard({Title,Summary,Content,Cover,createdAt,updatedAt,Author,_id}) {
+export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id}) {
+
+  const [image,setImage]=useState();
+
+  useEffect(()=>{
+    const base64String = btoa(new Uint8Array(img.data.data).reduce(function (data, byte) {
+      return data + String.fromCharCode(byte);
+  }, ''));
+
+   setImage(base64String)
+
+  },[])
 
  
   return (
     <Paper elevation={20} sx={{width:"360px",margin:"auto", marginTop:"30px" }} >
     <Card sx={{width:"360px",margin:"auto", marginTop:"0px" }} >
     
-     <Link to={`/details/${_id}`}> <img src={`${base_url}/${Cover}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
+     <Link to={`/details/${_id}`}> <img src={`data:image/png;base64,${image}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {Title}
