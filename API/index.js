@@ -19,7 +19,7 @@ dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
 
- app.use(cors({credentials:true,origin:"*"}));
+ app.use(cors());
 app.use(express.json());
 //  app.use(bodyParser.json())
 app.use(cookieParser());
@@ -173,6 +173,16 @@ app.get("/blogs/:id",async(req,res)=>{
     const blog=await Post.findById(req.params.id).populate('Author',['Name']);
     res.json(blog);
 
+  }
+  catch(err){
+    res.status(505).json(err);
+  }
+})
+
+app.delete("/blogs/:id",async(req,res)=>{
+  try{
+    const blog=await Post.deleteOne(req.params.id);
+    res.json("ok");
   }
   catch(err){
     res.status(505).json(err);
