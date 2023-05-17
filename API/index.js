@@ -4,7 +4,8 @@ const connection=require("./Config/db")
 const cors=require('cors');
 const app=express();
 const User=require("./models/user.js");
-const Post=require("./models/post.js")
+const Post=require("./models/post.js");
+const Photos=require("./models/profile");
 const bcrypt=require("bcryptjs");
 const cookieParser=require("cookie-parser");
 const bodyParser = require('body-parser');
@@ -106,6 +107,9 @@ app.post('/profile',async(req,res)=>{
 
 })
 
+
+
+
 app.post("/logout",async(req,res)=>{
    res.cookie('token'," ").json("ok");
 })
@@ -155,6 +159,52 @@ app.post("/post",upload.single('file') ,async(req,res)=>{
 
 )
 
+app.post('/photo',upload.single('file'),async(req,res)=>{
+  try{
+    let token=req.body.token;
+    jwt.verify(token ,secret,{},async(err,info)=>{
+        if(err) throw err;
+        
+        const photo=new Photos({
+         
+          img: {
+            data: fs.readFileSync("uploads/" + req.file.filename),
+            contentType: "image/png",
+          },
+      
+          Author:info.id
+        })
+        const Photo=await photo.save();
+        res.status(200).json(Photo);
+
+    })
+
+  }
+  catch(err){
+    res.status(505).json(err);
+
+  }
+  
+})
+
+
+app.get('/photo/:id',async(req,res)=>{
+  try{
+    // console.log(req.params);
+    const data=await Photos.findOne('Author'=== req.params.id);
+    console.log(data);
+    // res.status(200).json(data);
+
+  }
+  catch(err){
+    res.status(505).json(err);
+
+  }
+
+})
+
+
+
 app.get("/blogs",async(req,res)=>{
   try{
     const blogData=await Post.find().populate('Author',['Name']).sort({createdAt:-1}).limit(20);
@@ -181,8 +231,8 @@ app.get("/blogs/:id",async(req,res)=>{
 
 app.delete("/blogs/:id",async(req,res)=>{
   try{
-    const blog=await Post.deleteOne(req.params.id);
-    res.json("ok");
+    const blog=await Post.findByIdAndDelete(req.params.id).populate('Author',['Name']);
+    res.json(blog);
   }
   catch(err){
     res.status(505).json(err);
