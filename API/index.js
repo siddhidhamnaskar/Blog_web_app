@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const jwt=require("jsonwebtoken");
 
 const multer=require('multer');
-// const uploadMiddelwares=multer({dest:'uploads/'})
+
 
 const fs =require('fs');
 const dotenv=require("dotenv");
@@ -22,12 +22,9 @@ const secret=process.env.SECRET;
 
  app.use(cors());
 app.use(express.json());
-//  app.use(bodyParser.json())
-app.use(cookieParser());
 
-//  app.use(bodyParser.urlencoded({ extended: true}));
+ app.use(cookieParser());
 
-// app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 app.post("/signup",async(req,res)=>{
@@ -67,7 +64,7 @@ app.post("/login",async(req,res)=>{
        {
         jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{},(err,token)=>{
             if(err) throw err;
-            console.log(token);
+            // console.log(token);
             
             res.cookie('token',token).json(token)
         
@@ -79,10 +76,7 @@ app.post("/login",async(req,res)=>{
 
       
     
-    //    const {Password, ...other}=user._doc;
-   
-    //    res.status(200).json(other);
-    
+  
       }
       catch(err)
       {
@@ -162,6 +156,7 @@ app.post("/post",upload.single('file') ,async(req,res)=>{
 app.post('/photo',upload.single('file'),async(req,res)=>{
   try{
     let token=req.body.token;
+  
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
         
@@ -188,12 +183,12 @@ app.post('/photo',upload.single('file'),async(req,res)=>{
 })
 
 
-app.get('/photo/:id',async(req,res)=>{
+app.get('/photo/',async(req,res)=>{
   try{
-    // console.log(req.params);
-    const data=await Photos.findOne('Author'=== req.params.id);
-    console.log(data);
-    // res.status(200).json(data);
+    console.log(req.query);
+    const data=await Photos.findOne(req.query).sort({createdAt:-1}).limit(20);;
+    // console.log(data);
+    res.status(200).json(data);
 
   }
   catch(err){
@@ -267,20 +262,19 @@ app.put("/edit/:id",upload.single('file'),async(req,res)=>{
 
 })
 
-// app.get("/names/:Name",async(req,res)=>{
-//   try{
-//     console.log(1);
-//     console.log(req.params);
-//     const blog=await Post.find().populate('Author',['Name'])
-//     console.log(blog);
-//     res.json(blog);
+app.get("/names/",async(req,res)=>{
+  try{
+    console.log(1);
+    // console.log(req.query);
+    const blogData=await Post.find(req.query).populate('Author',['Name']).sort({createdAt:-1}).limit(20);
+    res.status(200).json(blogData);
+  
+  }
+  catch(err){
+    res.status(505).json(err);
+  }
 
-//   }
-//   catch(err){
-//     res.status(505).json(err);
-//   }
-
-// })
+})
 
 
 app.listen(PORT,()=>{
