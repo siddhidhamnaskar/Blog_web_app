@@ -48,7 +48,7 @@ export default function EditPost(){
       fetch(`${base_url}/edit/${id}`,{
         method:"Put",
          body:data,
-         credentials:'include'
+        
 
       })
       .then((res)=>{

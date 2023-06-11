@@ -1,31 +1,67 @@
 import { Paper,Typography } from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect,useState } from "react";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import {formatISO9075} from "date-fns";
 import { UserContext } from "../Components/Usercontext";
 import { Link } from "react-router-dom";
 import { base_url } from "../Sevices/API";
+import CircularIndeterminate from "../Components/Loader";
 export default function Details(){
     const {userInfo} =useContext(UserContext);
+    const [elem,setElem]=useState("")
+    const [image,setImage]=useState("")
   
-   const [data,setData]=useState("");
   const {id} =useParams();
+
+  const navigate=useNavigate();
 
 //   console.log(userInfo, data);
   useEffect(()=>{
+   
 
      fetch(`${base_url}/blogs/${id}`)
      .then((res)=>{
-        res.json().then((json)=>{setData(json)});
+        res.json().then((json)=>{setElem(json);  const base64String = btoa(new Uint8Array(json.img.data.data).reduce(function (data, byte) {
+         return data + String.fromCharCode(byte);
+     }, ''));
+   
+     setImage(base64String)});
      })
+
+     
+ 
     
 
   },[])
 
+
+  const deletePost=()=>{
+    fetch(`${base_url}/blogs/${id}`,{
+      method:"DELETE",
+      headers:{
+        "Content-type":"application/json"
+      }
+      
+    })
+    .then((res)=>{
+       return res.json();
+    })
+    .then((json)=>{
+      console.log(json);
+      alert("Post Deleted");
+      navigate("/")
+    })
+    .catch((err)=>{
+      console.log("Error")
+    })
+  }
+
    const print=()=>{
-      console.log(data);
+      console.log(elem);
    }
     
    const paperStyle={
@@ -38,29 +74,35 @@ export default function Details(){
      
 
    }
+
      
-    if(data==="" ) {
+    if(elem==="" ) {
       return <>
+        <ResponsiveAppBar/>
+        <CircularIndeterminate/>
       </>
     }
 
     return <>
     <ResponsiveAppBar/>
     <Paper elevation={20} style={paperStyle}>  
-      <h1>{data.Title}</h1>
-      <p>{data.Summary}</p>
+      <h1>{elem.Title}</h1>
+      <p>{elem.Summary}</p>
       <Typography>
-          <Link href=''>{data.Author.Name}</Link>
-          <time>{formatISO9075(new Date(data.createdAt))}</time>
+          <Link href=''>{elem.Author.Name}</Link>
+          <br/>
+          <time>{formatISO9075(new Date(elem.createdAt))}</time>
         </Typography>
        {
-        userInfo && userInfo.id==data.Author._id ? <Link to={`/edit/${id}`} style={{textAlign:"right"}}>Edit</Link>:null
+        userInfo && userInfo.id==elem.Author._id ?<div><Link to={`/edit/${id}`} style={{textAlign:"right"}}>Edit</Link> <br/> <IconButton aria-label="delete" size="large">
+        <DeleteIcon onClick={deletePost} fontSize="inherit" />
+      </IconButton></div> :null
        }
       
-      <img onClick={print} src={`${base_url}/${data.Cover}`} style={{width:"100%" ,height:"400px"}}></img>
+      <img src={`data:image/png;base64,${image}`} onClick={print} style={{width:"100%" ,height:"400px"}}></img>
       
       <h2>Content:</h2>
-      <div dangerouslySetInnerHTML={{__html:data.Content}}/>
+      <div dangerouslySetInnerHTML={{__html:elem.Content}}/>
 
     </Paper>
 

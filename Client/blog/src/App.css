@@ -17,6 +17,31 @@
   grid-template-columns: repeat(3,1fr);
 }
 
+#blogcontainer{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+
+}
+
+.profileContainer{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profilePaper>div{
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+}
+
+.editIcon{
+  /* position: relative; */
+  width: 20px;
+  margin-top: -500px;
+}
 @media all and (max-width:500px) and (min-width:281px){
   #cardcontainer{
     width: 100%;

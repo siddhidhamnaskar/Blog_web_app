@@ -29,7 +29,7 @@ export default function CreatePost(){
       fetch(`${base_url}/post`,{
         method:"POST",
          body:data,
-         credentials:'include'
+       
 
       })
       .then((res)=>{

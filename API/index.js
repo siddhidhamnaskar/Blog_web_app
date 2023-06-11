@@ -65,6 +65,10 @@ app.post("/login",async(req,res)=>{
         jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{},(err,token)=>{
             if(err) throw err;
             // console.log(token);
+
+            // token=jwt.sign({
+            //   "expiresIn":"1 day"
+            // })
             
             res.cookie('token',token).json(token)
         
@@ -185,7 +189,7 @@ app.post('/photo',upload.single('file'),async(req,res)=>{
 
 app.get('/photo/',async(req,res)=>{
   try{
-    console.log(req.query);
+    //  console.log(req.query);
     const data=await Photos.findOne(req.query).sort({createdAt:-1}).limit(20);;
     // console.log(data);
     res.status(200).json(data);
@@ -264,16 +268,34 @@ app.put("/edit/:id",upload.single('file'),async(req,res)=>{
 
 app.get("/names/",async(req,res)=>{
   try{
-    console.log(1);
-    // console.log(req.query);
-    const blogData=await Post.find(req.query).populate('Author',['Name']).sort({createdAt:-1}).limit(20);
-    res.status(200).json(blogData);
+    // console.log(1);
+    //  console.log(req.query.Author);
+    const blogData=await Post.find().populate('Author',['Name']).sort({createdAt:-1}).limit(20);
+    // console.log(blogData);
+    const data=blogData.filter((elem)=>{
+      return elem.Author.Name===req.query.Author
+    })
+    
+    res.status(200).json(data);
   
   }
   catch(err){
     res.status(505).json(err);
   }
 
+})
+
+app.get("/myBlogs/",async(req,res)=>{
+  try{
+    // console.log(req.query);
+    const blogData=await Post.find(req.query).sort({createdAt:-1}).limit(20);
+    // console.log(blogData);
+    res.status(200).json(blogData);
+
+  }
+  catch(err){
+    res.status(505).json(err);
+  }
 })
 
 

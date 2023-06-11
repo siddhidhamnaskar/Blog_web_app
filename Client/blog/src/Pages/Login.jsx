@@ -5,8 +5,10 @@ import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../Sevices/API";
-import CircularIndeterminate from "../Components/Loader";
-import LinearDeterminate from "../Components/progress";
+// import CircularIndeterminate from "../Components/Loader";
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+
 export default function Login(){
   const [user, setUser]=useState({Email:"",Password:""});
   const  [disabled, setDisabled]=useState(true);
@@ -38,7 +40,7 @@ export default function Login(){
         "Content-Type":"application/json"
       },
       body:JSON.stringify(user),
-      credentials:`include`
+      
      })
      .then((res)=>{
        res.json().then((data)=>{
@@ -50,6 +52,8 @@ export default function Login(){
       
      })
      .catch((err)=>{
+    
+      setLoad(false)
       alert("Login Failed");
      })
 
@@ -87,8 +91,11 @@ export default function Login(){
 
     return<>
        <ResponsiveAppBar/>
-       {load ?<LinearDeterminate/>:null}
+    
        <Paper elevation={20} style={paperStyle}>
+       {load ?  <Box sx={{ width: '100%' }}>
+      <LinearProgress />
+    </Box>:null}
         <Typography align="center" style={{paddingTop:"50px",fontSize:"23px", fontWeight:"bold"}}>LOGIN</Typography>
              <form style={formstyle}>
 

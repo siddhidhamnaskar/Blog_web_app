@@ -2,24 +2,39 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
-import { useEffect } from 'react';
+import { useEffect ,useState} from 'react';
 import { base_url } from '../Sevices/API';
 import { set } from 'mongoose';
+import { store } from '../Redux/store';
+import { getData } from '../Redux/actions';
 
 export default function Playground() {
-  const [value, setValue] = React.useState([]);
-    const [data,setData]=React.useState([]);
+  const [value, setValue] = React.useState();
+  const [selectedTeam, setSelectedTeam] = useState({Author:{Name:""}});
+     const [data,setData]=React.useState([]);
     
-
+    
+     store.subscribe(()=>{
+      // console.log(store.getState());
+      setData(store.getState().data)
+      
+    })
     
 
 
     useEffect(()=>{
-        fetch(`${base_url}/blogs`)
+         
+      console.log(selectedTeam.Author.Name);
+
+        fetch(`${base_url}/names/?Author=${selectedTeam.Author.Name}`)
         .then((res)=>{
             res.json().then((json)=>{
-                // console.log(json)
-                  setData(json);
+                 console.log(json)
+                  // setBlogData(json);
+                  if(selectedTeam.Author.Name)
+                  {
+                  store.dispatch(getData(json));
+                  }
                 //  filterData(json);
             })
         })
@@ -27,9 +42,9 @@ export default function Playground() {
             console.log("Error");
         })
 
-        console.log(value);
+      
     
-    },[value])
+    },[selectedTeam])
 
 
   const defaultProps = {
@@ -41,16 +56,8 @@ export default function Playground() {
 
   return (
     <Stack spacing={1} sx={{ width: 300 }}>
-      <Autocomplete
-       {...defaultProps}
-        key={1}
-        id="disable-close-on-select"
-        freeSolo
-       renderInput={(params) => (
-         
-          <TextField {...params} label="Search Here..."  variant="standard" />
-        )}
-      />
+      <Autocomplete id="nba teams" options={data} renderInput={params => ( <TextField {...params} label="Serach Here" variant="outlined" /> )} getOptionLabel={option => option.Author.Name} style={{ width: 270 }} value={selectedTeam} onChange={(_event, newTeam) => { setSelectedTeam(newTeam); }} />
+      
      
       
     </Stack>

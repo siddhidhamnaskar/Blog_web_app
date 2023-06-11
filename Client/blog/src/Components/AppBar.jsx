@@ -21,6 +21,8 @@ import { useEffect,useState } from 'react';
 import { UserContext } from './Usercontext';
 
 import { base_url } from '../Sevices/API';
+import { store } from '../Redux/store';
+import { saveImage } from '../Redux/actions';
 
 
 const pages = ['CREATE A POST+'];
@@ -30,29 +32,56 @@ const pages = ['CREATE A POST+'];
 
 
 function ResponsiveAppBar() {
-  const {userInfo,setUserInfo} =React.useContext(UserContext);
+  const {userInfo,setUserInfo,image,setImage} =React.useContext(UserContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [photo, setPhoto]=React.useState(null)
+  
  
   const navigate=useNavigate();
+
+  // store.subscribe(()=>{
+  //    console.log(store.getState());
+  //   setPhoto(store.getState().image);
+  // })
   
-let token=localStorage.getItem('token')||"";
+  
+
  useEffect(()=>{
+  var token=localStorage.getItem('token')||"";
+
      fetch(`${base_url}/profile`,{
       method:"post",
       headers:{
         "Content-type":"application/json"
       },
       body:JSON.stringify({'token':token}),
-      credentials:'include'
+   
 
      })
      .then((res)=>{
        res.json().then((info)=>{
-        //  console.log(info);
-        console.log(info);
+         
          setUserInfo(info);
+         fetch(`${base_url}/photo/?Author=${info.id}`)
+         .then((res)=>{
+           return res.json();
+         })
+         .then((json)=>{
+        
+          const base64String = btoa(new Uint8Array(json.img.data.data).reduce(function (data, byte) {
+            return data + String.fromCharCode(byte);
+        }, ''));
+      
+           setPhoto(base64String);
+           setImage(base64String);
+         })
+         .catch((err)=>{
+          console.log("Error");
+         
+         })
+        
+       
        
        })
        .catch((err)=>{
@@ -60,14 +89,20 @@ let token=localStorage.getItem('token')||"";
         console.log("Error");
        })
      })
+
+
+
     },[])
+
+   
 
     const logout=()=>{
       fetch(`${base_url}/logout`,{
-        credentials:'include',
+       
         method:'POST',
       })
       localStorage.setItem('token',"");
+    
       setUserInfo({Email:"",Name:"",id:""});
        navigate("/login")
 
@@ -108,7 +143,7 @@ let token=localStorage.getItem('token')||"";
               textDecoration: 'none',
             }}
           >
-            MY BLOG
+           BLOG APP
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -143,6 +178,7 @@ let token=localStorage.getItem('token')||"";
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   {userInfo.Name?   <Link to="/createpost" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
+                  {userInfo.Name?   <Link to="/myBlogs" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>MY BLOGS</Link> :null}
                 </MenuItem>
               ))}
             </Menu>
@@ -164,7 +200,7 @@ let token=localStorage.getItem('token')||"";
               textDecoration: 'none',
             }}
           >
-            MY BLOG
+            BLOG APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -174,6 +210,7 @@ let token=localStorage.getItem('token')||"";
                 sx={{ my: 2, color: 'black', display: 'block' }}
               >
                   {userInfo.Name ?   <Link to="/createpost" style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
+                  {userInfo.Name?   <Link to="/myBlogs" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>MY BLOGS</Link> :null}
               </Button>
             ))}
           </Box>
@@ -192,7 +229,7 @@ let token=localStorage.getItem('token')||"";
           
             
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 50, height: 50 }} />
           </IconButton>
         </Tooltip>
         <Menu
@@ -213,7 +250,7 @@ let token=localStorage.getItem('token')||"";
         >
          
             <MenuItem onClick={handleCloseUserMenu} style={{display:"flex" ,flexDirection:"column"}}>
-              <Typography key="Profile" textAlign="center">Profile</Typography>
+             <Link to={"/profile"}> <Typography key="Profile" textAlign="center">Profile</Typography></Link>
               <br/>
               <Typography key="Logout" textAlign="center" onClick={logout}>Logout</Typography>
            

@@ -8,12 +8,13 @@ import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
 import {formatISO9075} from "date-fns";
 import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
+import { useState,useEffect ,useContext} from 'react';
+// import { UserContext } from './Usercontext';
 // import { base_url } from '../Sevices/API';
 
 export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id}) {
-
-  const [image,setImage]=useState();
+  
+  const [image,setImage]=useState("")
 
   useEffect(()=>{
     const base64String = btoa(new Uint8Array(img.data.data).reduce(function (data, byte) {
@@ -36,6 +37,7 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
         </Typography>
         <Typography>
           <a href=''>{Author.Name}</a>
+          <br/>
           <time>{formatISO9075(new Date(createdAt))}</time>
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -43,7 +45,7 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
+        
        <Link to={`/details/${_id}`}><Button size="small">Learn More</Button></Link> 
       </CardActions>
     </Card>
