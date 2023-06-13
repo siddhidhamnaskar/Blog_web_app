@@ -62,7 +62,7 @@ app.post("/login",async(req,res)=>{
 
        if(validate)
        {
-        jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{},(err,token)=>{
+        jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{ expiresIn: "1h" },(err,token)=>{
             if(err) throw err;
             // console.log(token);
 
