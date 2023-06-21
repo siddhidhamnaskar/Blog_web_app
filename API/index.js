@@ -288,7 +288,7 @@ app.get("/names/",async(req,res)=>{
 app.get("/myBlogs/",async(req,res)=>{
   try{
     // console.log(req.query);
-    const blogData=await Post.find(req.query).sort({createdAt:-1}).limit(20);
+    const blogData=await Post.find(req.query).populate('Author',['Name']).sort({createdAt:-1}).limit(20);
     // console.log(blogData);
     res.status(200).json(blogData);
 
