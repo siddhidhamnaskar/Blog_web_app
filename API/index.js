@@ -8,7 +8,7 @@ const Post=require("./models/post.js");
 const Photos=require("./models/profile");
 const bcrypt=require("bcryptjs");
 const cookieParser=require("cookie-parser");
-const bodyParser = require('body-parser');
+const bodyparser = require('body-parser');
 const jwt=require("jsonwebtoken");
 const multer=require('multer');
 
