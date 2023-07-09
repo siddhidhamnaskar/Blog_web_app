@@ -130,22 +130,33 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/post" ,upload.single('file'),async(req,res)=>{
+app.post("/post" ,upload.array('file[]',1),async(req,res)=>{
 
   try{
    
     
-   console.log()
+    const urls=[];
+    const files=req.files;
     
-    const {path}=req.file;
-    const result=await cloudinary.uploader.upload(path)
+    for(const file of files)
+    {
+      const {path}=file;
+      const res=await cloudinary.uploader.upload(path)
+      // console.log(res.secure_url);
+      urls.push(res.secure_url);
+      // console.log(urls[0]);
+       fs.unlinkSync(path);
+
+    }
+    
+   
  
      
      
         const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
-          img:result.secure_url,
+          img:urls[0],
           Content:req.body.content,
           Author:req.body.id
         })
