@@ -137,11 +137,12 @@ app.post("/post" ,upload.single('file'),async(req,res)=>{
     
    console.log()
     let token=req.body.token;
+    const {path}=req.file;
+    const result=await cloudinary.uploader.upload(path)
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
      
-        const {path}=req.file;
-        const result=await cloudinary.uploader.upload(path)
+     
         const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
