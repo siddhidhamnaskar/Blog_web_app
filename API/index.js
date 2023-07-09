@@ -130,7 +130,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/post" ,upload.array('file[]',1),async(req,res)=>{
+app.post("/post" ,upload.array('file[]',2),async(req,res)=>{
 
   try{
    
