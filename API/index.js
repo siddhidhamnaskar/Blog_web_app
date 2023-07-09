@@ -27,7 +27,7 @@ app.use(bodyparser.json())
 app.use(express.json());
 
 
-  app.use(cookieParser());
+  //  app.use(cookieParser());
 
 
   cloudinary.config({
