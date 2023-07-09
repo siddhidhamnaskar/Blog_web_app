@@ -25,7 +25,7 @@ const cloudinary=require("cloudinary");
  app.use(bodyparser.urlencoded({ extended: true }))
 app.use(bodyparser.json())
 app.use(express.json());
-app.use(express.json());
+
 
   app.use(cookieParser());
 
