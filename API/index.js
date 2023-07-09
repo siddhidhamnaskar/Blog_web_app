@@ -10,22 +10,29 @@ const bcrypt=require("bcryptjs");
 const cookieParser=require("cookie-parser");
 const bodyParser = require('body-parser');
 const jwt=require("jsonwebtoken");
-
 const multer=require('multer');
 
 
-const fs =require('fs');
+
 const dotenv=require("dotenv");
 dotenv.config();
 const PORT=process.env.PORT || 3033;
 const secret=process.env.SECRET;
+const cloudinary=require("cloudinary");
+
 
  app.use(cors());
 app.use(express.json());
 
- app.use(cookieParser());
+  app.use(cookieParser());
 
 
+  cloudinary.config({
+    cloud_name:process.env.CLOUD_NAME,
+    api_key:process.env.API_KEY,
+    api_secret:process.env.API_SECRET
+
+})
 
 app.post("/signup",async(req,res)=>{
     try{
@@ -64,11 +71,7 @@ app.post("/login",async(req,res)=>{
        {
         jwt.sign({Name:user.Name,Email:user.Email,id:user._id},secret,{ expiresIn: "1h" },(err,token)=>{
             if(err) throw err;
-            // console.log(token);
-
-            // token=jwt.sign({
-            //   "expiresIn":"1 day"
-            // })
+           
             
             res.cookie('token',token).json(token)
         
@@ -112,9 +115,10 @@ app.post("/logout",async(req,res)=>{
    res.cookie('token'," ").json("ok");
 })
 
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    cb(null, "./uploads");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -123,22 +127,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
-app.post("/post",upload.single('file') ,async(req,res)=>{
+app.post("/post" ,upload.single('file'),async(req,res)=>{
 
   try{
-   
+  
 
     let token=req.body.token;
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
+     
+        const {path}=req.file;
+        const result=await cloudinary.uploader.upload(path)
+        console.log(res.secure_url);
         const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
-          img: {
-            data: fs.readFileSync("uploads/" + req.file.filename),
-            contentType: "image/png",
-          },
+          img:result.secure_url,
           Content:req.body.content,
           Author:info.id
         })
@@ -160,16 +164,15 @@ app.post("/post",upload.single('file') ,async(req,res)=>{
 app.post('/photo',upload.single('file'),async(req,res)=>{
   try{
     let token=req.body.token;
-  
+ 
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
-        
+      
+        const {path}=req.file;
+        const result=await cloudinary.uploader.upload(path)
         const photo=new Photos({
          
-          img: {
-            data: fs.readFileSync("uploads/" + req.file.filename),
-            contentType: "image/png",
-          },
+          img:result.secure_url,
       
           Author:info.id
         })
@@ -246,11 +249,10 @@ app.put("/edit/:id",upload.single('file'),async(req,res)=>{
      blog.Content=req.body.content;
      if(req.file)
      {
+      const {path}=req.file;
+      const result=await cloudinary.uploader.upload(path)
      
-      blog.img={
-        data: fs.readFileSync("uploads/" + req.file.filename),
-        contentType: "image/png",
-      }
+      blog.img=result.secure_url
 
      }
 
@@ -269,9 +271,9 @@ app.put("/edit/:id",upload.single('file'),async(req,res)=>{
 app.get("/names/",async(req,res)=>{
   try{
     // console.log(1);
-    //  console.log(req.query.Author);
+      console.log(req.query.Author);
     const blogData=await Post.find().populate('Author',['Name']).sort({createdAt:-1}).limit(20);
-    // console.log(blogData);
+    //  console.log(blogData);
     const data=blogData.filter((elem)=>{
       return elem.Author.Name===req.query.Author
     })
@@ -287,7 +289,7 @@ app.get("/names/",async(req,res)=>{
 
 app.get("/myBlogs/",async(req,res)=>{
   try{
-    // console.log(req.query);
+    //  console.log(req.query);
     const blogData=await Post.find(req.query).populate('Author',['Name']).sort({createdAt:-1}).limit(20);
     // console.log(blogData);
     res.status(200).json(blogData);

@@ -4,7 +4,7 @@ const {Schema}=require("mongoose");
 
 const profileSchema=new Schema({
   
-    img:{data:Buffer,ContentType:String},
+    img:{type:"String",required:true},
     Author:{type:Schema.Types.ObjectId,ref:'User'}
 },{
     timestamps:true
