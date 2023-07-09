@@ -22,12 +22,12 @@ const cloudinary=require("cloudinary");
 
 
  app.use(cors());
- app.use(bodyparser.urlencoded({ extended: true }))
-app.use(bodyparser.json())
+//  app.use(bodyparser.urlencoded({ extended: true }))
+// app.use(bodyparser.json())
 app.use(express.json());
 
 
-  app.use(cookieParser());
+  // app.use(cookieParser());
 
 
   cloudinary.config({
@@ -133,15 +133,15 @@ const upload = multer({ storage: storage });
 app.post("/post" ,upload.single('file'),async(req,res)=>{
 
   try{
-  
-
+   
+    
+   console.log()
     let token=req.body.token;
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
      
         const {path}=req.file;
         const result=await cloudinary.uploader.upload(path)
-        console.log(res.secure_url);
         const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
