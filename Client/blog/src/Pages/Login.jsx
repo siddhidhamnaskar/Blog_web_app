@@ -1,34 +1,48 @@
 
-import { Paper, TextField, Typography ,Button} from "@mui/material";
-// import {Box} from "@mui/material";
+import { Paper, TextField, Typography, Button, Box, Container, Grid, Link as MuiLink, Avatar, InputAdornment } from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { base_url } from "../Sevices/API";
-// import CircularIndeterminate from "../Components/Loader";
 import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196F3',
+    },
+    secondary: {
+      main: '#21CBF3',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+});
 
 export default function Login(){
   const [user, setUser]=useState({Email:"",Password:""});
   const  [disabled, setDisabled]=useState(true);
   const [load,setLoad]=useState(false);
   const navigate=useNavigate();
+
   useEffect(()=>{
     if(user.Email.length>0 && user.Password.length>7)
     {
       setDisabled(false);
     }
-
-  })
+  }, [user])
 
   const handleInput=(e)=>{
-    e.preventDefault();
     setUser({
       ...user,
       [e.target.name]:e.target.value
     })
-
   }
 
   const login=(e)=>{
@@ -40,7 +54,7 @@ export default function Login(){
         "Content-Type":"application/json"
       },
       body:JSON.stringify(user),
-      
+
      })
      .then((res)=>{
        res.json().then((data)=>{
@@ -49,86 +63,154 @@ export default function Login(){
         alert("Login Successfull");
       navigate("/");
        })
-      
+
      })
      .catch((err)=>{
-    
+
       setLoad(false)
       alert("Login Failed");
      })
 
   }
 
-   const formstyle={
-   
-     display:"flex",
-     flexDirection:"column",
-     width:"100%" ,
-     height:"70vh", 
-     alignItems:"center",
-     justifyContent:"center",
-    
-     
-    }
+  return (
+    <ThemeProvider theme={theme}>
+      <ResponsiveAppBar/>
+      <Container component="main" maxWidth="sm">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Paper
+            elevation={12}
+            sx={{
+              padding: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+              maxWidth: 400,
+              borderRadius: 3,
+              background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)',
+            }}
+          >
+            {load && <LinearProgress sx={{ width: '100%', mb: 2, borderRadius: 1 }} />}
 
-    const inputstyle={
-        width:"90%",
-        marginBottom:"30px"
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main', width: 60, height: 60 }}>
+              <LoginIcon sx={{ fontSize: 30 }} />
+            </Avatar>
 
-    }
-    const paperStyle={
-        width:"360px",
-        height:"500px",
-        margin:"auto",
-        marginTop:"50px",
-        display:"flex",
-        flexDirection:"column",
-        alignItems:"center",
-        justifyContent:"center"
-        // border:"1px solid black",
+            <Typography component="h1" variant="h4" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
+              Welcome Back
+            </Typography>
 
-    }
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
+              Sign in to your account to continue
+            </Typography>
 
-    return<>
-       <ResponsiveAppBar/>
-    
-       <Paper elevation={20} style={paperStyle}>
-       {load ?  <Box sx={{ width: '100%' }}>
-      <LinearProgress />
-    </Box>:null}
-        <Typography align="center" style={{paddingTop:"50px",fontSize:"23px", fontWeight:"bold"}}>LOGIN</Typography>
-             <form style={formstyle}>
+            <Box component="form" onSubmit={login} sx={{ mt: 1, width: '100%' }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="Email"
+                autoComplete="email"
+                autoFocus
+                value={user.Email}
+                onChange={handleInput}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                  },
+                }}
+              />
 
-                      
-     
-          
-     <TextField
-    required
-    id="outlined-required"
-    type="email"
-    label="Email"
-    name="Email"
-    value={user.Email}
-    onChange={handleInput}
-    placeholder="Enter Your Email"
-    style={inputstyle} 
-  />
-     <TextField
-    required
-    id="outlined-required"
-    type="password"
-    label="Password"
-    name="Password"
-    value={user.Password}
-    onChange={handleInput}
-    placeholder="Enter Your Password"
-    style={inputstyle} 
-  />
-     <Button variant="contained" disabled={disabled} onClick={login}>LOGIN</Button>
-  </form>
-  </Paper>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="Password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={user.Password}
+                onChange={handleInput}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                  },
+                }}
+              />
 
-    </>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={disabled}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  py: 1.5,
+                  borderRadius: 2,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  transition: 'all 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 6px 20px rgba(33, 150, 243, 0.3)',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'grey.300',
+                  },
+                }}
+              >
+                Sign In
+              </Button>
 
-
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <MuiLink
+                    component={Link}
+                    to="/signup"
+                    variant="body2"
+                    sx={{
+                      textDecoration: 'none',
+                      color: 'primary.main',
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    Don't have an account? Sign Up
+                  </MuiLink>
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
 }
