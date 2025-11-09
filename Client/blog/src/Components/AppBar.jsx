@@ -14,6 +14,12 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import AddIcon from '@mui/icons-material/Add';
+import BookIcon from '@mui/icons-material/Book';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Fade, Slide } from '@mui/material';
 
 import FreeSolo from './search';
 
@@ -28,8 +34,19 @@ import { saveImage } from '../Redux/actions';
 const pages = ['CREATE A POST+'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-
-
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196F3',
+    },
+    secondary: {
+      main: '#21CBF3',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+});
 
 function ResponsiveAppBar() {
   const {userInfo,setUserInfo,image,setImage} =React.useContext(UserContext);
@@ -124,27 +141,35 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl" sx={{backgroundColor:"white",color:"black"}}>
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-           BLOG APP
-          </Typography>
+    <ThemeProvider theme={theme}>
+      <AppBar position="static" elevation={4} sx={{
+        backgroundColor: 'primary.main',
+        color: 'white',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'all 0.3s ease-in-out',
+      }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'Roboto, sans-serif',
+                fontWeight: 700,
+                letterSpacing: '.2rem',
+                color: 'inherit',
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+                '&:hover': { color: '#E3F2FD' },
+              }}
+            >
+             BLOG APP
+            </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -177,8 +202,18 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {userInfo.Name?   <Link to="/createpost" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
-                  {userInfo.Name?   <Link to="/myBlogs" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>MY BLOGS</Link> :null}
+                  {userInfo.Name ? (
+                    <>
+                      <Link to="/createpost" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                        <AddIcon sx={{ mr: 1 }} />
+                        CREATE NEW POST+
+                      </Link>
+                      <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                        <BookIcon sx={{ mr: 1 }} />
+                        MY BLOGS
+                      </Link>
+                    </>
+                  ) : null}
                 </MenuItem>
               ))}
             </Menu>
@@ -193,9 +228,9 @@ function ResponsiveAppBar() {
               mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: 'Roboto, sans-serif',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: '.2rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
@@ -203,25 +238,57 @@ function ResponsiveAppBar() {
             BLOG APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                  {userInfo.Name ?   <Link to="/createpost" style={{marginRight:"30px",fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>CREATE NEW POST+</Link> :null}
-                  {userInfo.Name?   <Link to="/myBlogs" style={{fontSize:'15px',fontWeight:"bold",textDecoration:"none"}}>MY BLOGS</Link> :null}
-              </Button>
-            ))}
+            {userInfo.Name ? (
+              <>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    transition: 'all 0.2s',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  <Link to="/createpost" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center', color: 'inherit' }}>
+                    <AddIcon sx={{ mr: 1 }} />
+                    CREATE NEW POST+
+                  </Link>
+                </Button>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    transition: 'all 0.2s',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center', color: 'inherit' }}>
+                    <BookIcon sx={{ mr: 1 }} />
+                    MY BLOGS
+                  </Link>
+                </Button>
+              </>
+            ) : null}
           </Box>
           {userInfo.Name ? <FreeSolo/>:null}
           
         
           <Box sx={{ flexGrow: 0 }} >
              {!userInfo.Name ? <>
-            <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px"}} >Login</Link>   
+            <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px",color: 'inherit'}} >Login</Link>   
          
-            <Link to="/signup" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none"}}>Register</Link>
+            <Link to="/signup" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",color: 'inherit'}}>Register</Link>
               
             </>:<> 
           
@@ -249,11 +316,17 @@ function ResponsiveAppBar() {
           onClose={handleCloseUserMenu}
         >
          
-            <MenuItem onClick={handleCloseUserMenu} style={{display:"flex" ,flexDirection:"column"}}>
-             <Link to={"/profile"}> <Typography key="Profile" textAlign="center">Profile</Typography></Link>
-              <br/>
-              <Typography key="Logout" textAlign="center" onClick={logout}>Logout</Typography>
-           
+            <MenuItem onClick={handleCloseUserMenu}>
+              <Link to="/profile" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
+                <PersonIcon sx={{ mr: 1 }} />
+                <Typography textAlign="center">Profile</Typography>
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleCloseUserMenu}>
+              <Typography textAlign="center" onClick={logout} style={{ display: 'flex', alignItems: 'center' }}>
+                <LogoutIcon sx={{ mr: 1 }} />
+                Logout
+              </Typography>
             </MenuItem>
           
         </Menu>
@@ -264,6 +337,7 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
+    </ThemeProvider>
   );
 }
 export default ResponsiveAppBar;
