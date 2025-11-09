@@ -14,29 +14,22 @@ import { useState,useEffect ,useContext} from 'react';
 
 export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id}) {
   
-  const [image,setImage]=useState("")
+  
 
-  useEffect(()=>{
-    const base64String = btoa(new Uint8Array(img.data.data).reduce(function (data, byte) {
-      return data + String.fromCharCode(byte);
-  }, ''));
-
-   setImage(base64String)
-
-  },[])
+  
 
  
   return (
     <Paper elevation={20} sx={{width:"360px",margin:"auto", marginTop:"30px" }} >
     <Card sx={{width:"360px",margin:"auto", marginTop:"0px" }} >
     
-     <Link to={`/details/${_id}`}> <img src={`data:image/png;base64,${image}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
+     <Link to={`/details/${_id}`}> <img src={`${img}`} style={{width:"100%",height:"200px"}} alt=""></img></Link>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {Title}
         </Typography>
         <Typography>
-          <a href=''>{Author.Name}</a>
+          {/* <a href=''>{Author.Name}</a> */}
           <br/>
           <time>{formatISO9075(new Date(createdAt))}</time>
         </Typography>

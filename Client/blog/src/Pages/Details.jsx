@@ -25,11 +25,7 @@ export default function Details(){
 
      fetch(`${base_url}/blogs/${id}`)
      .then((res)=>{
-        res.json().then((json)=>{setElem(json);  const base64String = btoa(new Uint8Array(json.img.data.data).reduce(function (data, byte) {
-         return data + String.fromCharCode(byte);
-     }, ''));
-   
-     setImage(base64String)});
+        res.json().then((json)=>{setElem(json)});
      })
 
      
@@ -99,7 +95,7 @@ export default function Details(){
       </IconButton></div> :null
        }
       
-      <img src={`data:image/png;base64,${image}`} onClick={print} style={{width:"100%" ,height:"400px"}}></img>
+      <img src={`${elem.img}`} onClick={print} style={{width:"100%" ,height:"400px"}}></img>
       
       <h2>Content:</h2>
       <div dangerouslySetInnerHTML={{__html:elem.Content}}/>

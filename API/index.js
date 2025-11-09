@@ -11,6 +11,7 @@ const cookieParser=require("cookie-parser");
 const bodyparser = require('body-parser');
 const jwt=require("jsonwebtoken");
 const multer=require('multer');
+const streamifier=require("streamifier");
 
 
 
@@ -119,51 +120,45 @@ app.post("/logout",async(req,res)=>{
 })
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
 
-const upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-app.post("/post" ,upload.array('file[]',2),async(req,res)=>{
+app.post("/post" ,upload.single("file"),async(req,res)=>{
 
   try{
    
     
     const urls=[];
-    const files=req.files;
-    
-    for(const file of files)
-    {
-      const {path}=file;
-      const res=await cloudinary.uploader.upload(path)
-      // console.log(res.secure_url);
-      urls.push(res.secure_url);
-      // console.log(urls[0]);
-       fs.unlinkSync(path);
-
-    }
-    
+    console.log(req.body);
+    const fileStr = req.file.buffer.toString("base64");
+    let token=req.body.token;
    
- 
+     jwt.verify(token ,secret,{},async(err,info)=>{
+      const response = await cloudinary.uploader.upload(
+      `data:${req.file.mimetype};base64,${fileStr}`,
+      { folder: "uploads" ,
+        resource_type: "auto",
+      } // optional folder
+      );
+
+      console.log(response);
+
+      // console.log(res.secure_url);
+      urls.push(response.secure_url);
      
-     
-        const blog=new Post({
+       const blog=new Post({
           Title:req.body.title,
           Summary:req.body.summary,
           img:urls[0],
           Content:req.body.content,
-          Author:req.body.id
+          Author:info.id
         })
         const post=await blog.save();
+        console.log(post);
         res.status(200).json(post);
 
-  
+    })
    
    
   }

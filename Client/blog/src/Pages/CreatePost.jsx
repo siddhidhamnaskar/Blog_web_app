@@ -17,15 +17,15 @@ export default function CreatePost(){
    const postData=(e)=>{
     e.preventDefault();
     let token=localStorage.getItem('token')||"";
-    console.log(file[0]);
+    console.log(file);
       const data=new FormData();
       data.set('title',title);
       data.set('summary',summary);
-      data.set('file',file[0]);
+      data.set('file',file);
       data.set('content',content);
       data.set('token',token);
   
-      console.log(file[0]);
+      console.log(file);
       fetch(`${base_url}/post`,{
         method:"POST",
          body:data,
@@ -111,7 +111,7 @@ export default function CreatePost(){
     type="file"
     name="file"
    
-    onChange={(e)=>setFile(e.target.files)}
+    onChange={(e)=>setFile(e.target.files[0])}
    
  
     style={inputstyle} 
