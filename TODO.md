@@ -1,31 +1,9 @@
-# TODO: UI Improvements for Blog App
+artt# TODO: Convert Blog App UI to LinkedIn-like Design
 
-## AppBar Improvements
-- [x] Add elevation to AppBar for depth
-- [x] Implement a more modern color scheme with Material-UI theme
-- [x] Add subtle animations and transitions
-- [x] Improve responsiveness with better breakpoints
-- [x] Polish menu items with better icons and styling
-- [x] Optimize code for readability and performance
-- [x] Test the updated AppBar in browser
-
-## Blog Card Improvements
-- [x] Add Material-UI theme provider
-- [x] Implement hover animations and transitions
-- [x] Add chips for date and author information
-- [x] Improve typography and spacing
-- [x] Add "NEW" badge overlay
-- [x] Enhance button styling with icons
-- [x] Implement text truncation for long content
-- [x] Test the updated blog cards in browser
-
-## Login & Signup Improvements
-- [x] Add Material-UI theme provider
-- [x] Implement modern card-based layout with elevation
-- [x] Add icons to input fields (email, password, person)
-- [x] Improve typography and spacing
-- [x] Add avatar icons for visual appeal
-- [x] Enhance button styling with hover effects
-- [x] Add navigation links between login/signup
-- [x] Implement responsive design with Container
-- [x] Test the updated login/signup forms in browser
+## Steps to Complete:
+- [x] Update AppBar.jsx to mimic LinkedIn top navigation bar (blue theme, logo, search, icons, user menu)
+- [x] Update Sidebar.jsx to include LinkedIn-style navigation items (Home, My Network, Jobs, etc.)
+- [x] Redesign Card.jsx to resemble LinkedIn posts (author avatar, name, timestamp, content, actions like like/comment/share)
+- [x] Modify App.js layout from grid to single-column feed, add right sidebar placeholder
+- [x] Update App.css for new feed layout and responsive design
+- [ ] Test the UI changes by running the app

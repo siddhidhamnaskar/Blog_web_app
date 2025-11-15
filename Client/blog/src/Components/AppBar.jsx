@@ -13,11 +13,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import AddIcon from '@mui/icons-material/Add';
-import BookIcon from '@mui/icons-material/Book';
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
+import WorkIcon from '@mui/icons-material/Work';
+import MessageIcon from '@mui/icons-material/Message';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Fade, Slide } from '@mui/material';
 
@@ -30,17 +33,13 @@ import { base_url } from '../Sevices/API';
 import { store } from '../Redux/store';
 import { saveImage } from '../Redux/actions';
 
-
-const pages = ['CREATE A POST+'];
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2196F3',
+      main: '#0077B5', // LinkedIn blue
     },
     secondary: {
-      main: '#21CBF3',
+      main: '#FFFFFF',
     },
   },
   typography: {
@@ -150,7 +149,7 @@ function ResponsiveAppBar() {
       }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }} />
+            <LinkedInIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }} />
             <Typography
               variant="h6"
               noWrap
@@ -200,25 +199,20 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {userInfo.Name ? (
-                    <>
-                      <Link to="/createpost" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
-                        <AddIcon sx={{ mr: 1 }} />
-                        CREATE NEW POST+
-                      </Link>
-                      <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
-                        <BookIcon sx={{ mr: 1 }} />
-                        MY BLOGS
-                      </Link>
-                    </>
-                  ) : null}
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link to="/" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                  <HomeIcon sx={{ mr: 1 }} />
+                  Home
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                  <PeopleIcon sx={{ mr: 1 }} />
+                  My Blogs
+                </Link>
+              </MenuItem>
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -237,50 +231,26 @@ function ResponsiveAppBar() {
           >
             BLOG APP
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {userInfo.Name ? (
-              <>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    transition: 'all 0.2s',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
-                >
-                  <Link to="/createpost" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center', color: 'inherit' }}>
-                    <AddIcon sx={{ mr: 1 }} />
-                    CREATE NEW POST+
-                  </Link>
-                </Button>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    transition: 'all 0.2s',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
-                >
-                  <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center', color: 'inherit' }}>
-                    <BookIcon sx={{ mr: 1 }} />
-                    MY BLOGS
-                  </Link>
-                </Button>
-              </>
-            ) : null}
+
+          {/* LinkedIn-style navigation icons */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+            <IconButton color="inherit" component={Link} to="/">
+              <HomeIcon />
+            </IconButton>
+            <IconButton color="inherit" component={Link} to="/myBlogs">
+              <PeopleIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <WorkIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <MessageIcon />
+            </IconButton>
+            <IconButton color="inherit">
+              <NotificationsIcon />
+            </IconButton>
           </Box>
+
           {userInfo.Name ? <FreeSolo/>:null}
           
         

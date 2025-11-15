@@ -5,22 +5,24 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Paper, Chip, Avatar, Box } from '@mui/material';
+import { Paper, Chip, Avatar, Box, IconButton } from '@mui/material';
 import { formatISO9075 } from "date-fns";
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PersonIcon from '@mui/icons-material/Person';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import CommentIcon from '@mui/icons-material/Comment';
+import ShareIcon from '@mui/icons-material/Share';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { UserContext } from './Usercontext';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2196F3',
+      main: '#0077B5',
     },
     secondary: {
-      main: '#21CBF3',
+      main: '#FFFFFF',
     },
   },
   typography: {
@@ -29,137 +31,125 @@ const theme = createTheme({
 });
 
 export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id}) {
+  const { userInfo } = useContext(UserContext);
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(0);
+
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikes(liked ? likes - 1 : likes + 1);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Paper
-        elevation={8}
+        elevation={1}
         sx={{
-          width: "380px",
+          width: "100%",
+          maxWidth: 600,
           margin: "auto",
-          marginTop: "30px",
-          borderRadius: 3,
+          marginTop: "20px",
+          borderRadius: 2,
           overflow: 'hidden',
-          transition: 'all 0.3s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-          },
+          border: '1px solid #e0e0e0',
         }}
       >
         <Card
           sx={{
-            width: "380px",
-            margin: "auto",
-            marginTop: "0px",
-            borderRadius: 3,
-            overflow: 'hidden',
-            transition: 'all 0.3s ease-in-out',
+            width: "100%",
+            borderRadius: 2,
           }}
         >
-          <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-            <Link to={`/details/${_id}`}>
-              <CardMedia
-                component="img"
-                height="220"
-                image={img}
-                alt={Title}
-                sx={{
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                }}
-              />
-            </Link>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 16,
-                right: 16,
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                borderRadius: 2,
-                px: 1,
-                py: 0.5,
-              }}
-            >
-              <Typography variant="caption" color="primary" fontWeight="bold">
-                NEW
-              </Typography>
-            </Box>
-          </Box>
-
+          {/* Post Header */}
           <CardContent sx={{ pb: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Avatar
+                src={Author?.avatar || `data:image/png;base64,${userInfo?.image || ''}`}
+                sx={{ width: 48, height: 48, mr: 2 }}
+              />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {Author?.Name || 'Author'}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {formatISO9075(new Date(createdAt))} • Public
+                </Typography>
+              </Box>
+              <IconButton size="small">
+                <MoreHorizIcon />
+              </IconButton>
+            </Box>
+
+            {/* Post Title */}
             <Typography
-              gutterBottom
-              variant="h5"
+              variant="h6"
               component="div"
               sx={{
                 fontWeight: 600,
                 color: 'text.primary',
                 mb: 2,
                 lineHeight: 1.3,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
               }}
             >
               {Title}
             </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
-              <Chip
-                icon={<AccessTimeIcon />}
-                label={formatISO9075(new Date(createdAt))}
-                size="small"
-                variant="outlined"
-                sx={{ fontSize: '0.75rem' }}
-              />
-              {Author && (
-                <Chip
-                  icon={<PersonIcon />}
-                  label={Author.Name || 'Author'}
-                  size="small"
-                  variant="outlined"
-                  sx={{ fontSize: '0.75rem' }}
-                />
-              )}
-            </Box>
-
+            {/* Post Summary */}
             <Typography
-              variant="body2"
-              color="text.secondary"
+              variant="body1"
+              color="text.primary"
               sx={{
                 lineHeight: 1.6,
-                display: '-webkit-box',
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
+                mb: 2,
               }}
             >
               {Summary}
             </Typography>
           </CardContent>
 
-          <CardActions sx={{ pt: 0, px: 2, pb: 2 }}>
-            <Button
-              component={Link}
-              to={`/details/${_id}`}
-              size="small"
-              variant="contained"
-              endIcon={<ArrowForwardIcon />}
+          {/* Post Image */}
+          {img && (
+            <CardMedia
+              component="img"
+              height="300"
+              image={img}
+              alt={Title}
               sx={{
-                borderRadius: 2,
-                textTransform: 'none',
-                fontWeight: 500,
-                transition: 'all 0.2s',
-                '&:hover': {
-                  transform: 'translateX(4px)',
-                },
+                objectFit: 'cover',
               }}
-            >
-              Read More
-            </Button>
+            />
+          )}
+
+          {/* Post Actions */}
+          <CardActions sx={{ pt: 1, px: 2, pb: 1, justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton
+                size="small"
+                onClick={handleLike}
+                sx={{ color: liked ? 'primary.main' : 'text.secondary' }}
+              >
+                <ThumbUpIcon />
+              </IconButton>
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                {likes} Like{likes !== 1 ? 's' : ''}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton size="small" component={Link} to={`/details/${_id}`}>
+                <CommentIcon />
+              </IconButton>
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                Comment
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton size="small">
+                <ShareIcon />
+              </IconButton>
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                Share
+              </Typography>
+            </Box>
           </CardActions>
         </Card>
       </Paper>
