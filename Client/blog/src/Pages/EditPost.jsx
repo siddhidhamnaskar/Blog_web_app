@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Paper, TextField, Typography, Alert, Snackbar} from "@mui/material";
+import { Paper, TextField, Typography, Button, Box, Container, Grid, Link as MuiLink, Avatar, InputAdornment, Alert, Snackbar } from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -7,6 +7,26 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../Components/Usercontext";
 import { base_url } from "../Sevices/API";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import TitleIcon from '@mui/icons-material/Title';
+import DescriptionIcon from '@mui/icons-material/Description';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import EditIcon from '@mui/icons-material/Edit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196F3',
+    },
+    secondary: {
+      main: '#21CBF3',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+});
+
 export default function EditPost(){
     const {id}=useParams();
   const {userInfo,setUserInfo} =React.useContext(UserContext);
@@ -103,55 +123,161 @@ export default function EditPost(){
         ],
       };
 
-    return <>
-    <ResponsiveAppBar/>
-    <Paper elevation={20} style={paperStyle}>
-        <form style={{width:"100%",height:"100%"}} onSubmit={updateData}>
-            <Typography style={{fontSize:"30px",fontWeight:"bold",marginTop:"20px"}}>EDIT A POST</Typography>
-            <TextField
-   
-    id="outlined-required"
-    type="title"
-    label="Title"
-    name="title"
-    value={title}
-    autoFocus
-    onChange={(e)=>setTitle(e.target.value)}
-    placeholder="Title"
-    style={inputstyle} 
-  />
-         <TextField
-  
-    id="outlined-required"
-    type="summary"
-    label="Summary"
-    name="summary"
-    value={summary}
-    onChange={(e)=>setSummary(e.target.value)}
-    placeholder="Summary"
-    style={inputstyle} 
-  />
-         <TextField
-   
-    id="outlined-required"
-    type="file"
-    name="file"
-   
-    onChange={(e)=>setFile(e.target.files)}
-   
- 
-    style={inputstyle} 
-  />
-          <ReactQuill value={content} onChange={newValue=>setContent(newValue)} style={{width:"90%",margin:"auto",marginTop:"30px"}} modules={modules}/>
-          <button  style={{width:"90%",margin:"auto",backgroundColor:"grey",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}}>SUBMIT</button>
-        </form>
-    </Paper>
-    <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
-      <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
-        {alertMessage}
-      </Alert>
-    </Snackbar>
+    return (
+        <ThemeProvider theme={theme}>
+            <ResponsiveAppBar />
+            <Container component="main" maxWidth="md">
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Paper
+                        elevation={12}
+                        sx={{
+                            padding: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            width: '100%',
+                            maxWidth: 600,
+                            borderRadius: 3,
+                            background: 'linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)',
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'primary.main', width: 60, height: 60 }}>
+                            <EditIcon sx={{ fontSize: 30 }} />
+                        </Avatar>
 
-    </>
-    
+                        <Typography component="h1" variant="h4" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
+                            Edit Your Post
+                        </Typography>
+
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 3, textAlign: 'center' }}>
+                            Update your blog post content
+                        </Typography>
+
+                        <Box component="form" onSubmit={updateData} sx={{ mt: 1, width: '100%' }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="title"
+                                label="Post Title"
+                                name="title"
+                                value={title}
+                                autoFocus
+                                onChange={(e)=>setTitle(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <TitleIcon color="action" />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: 2,
+                                    },
+                                }}
+                            />
+
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="summary"
+                                label="Post Summary"
+                                name="summary"
+                                value={summary}
+                                onChange={(e)=>setSummary(e.target.value)}
+                                multiline
+                                rows={3}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <DescriptionIcon color="action" />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: 2,
+                                    },
+                                }}
+                            />
+
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                id="file"
+                                type="file"
+                                name="file"
+                                onChange={(e)=>setFile(e.target.files)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <CloudUploadIcon color="action" />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: 2,
+                                    },
+                                }}
+                                helperText="Leave empty to keep current image"
+                            />
+
+                            <Box sx={{ mt: 3, mb: 2 }}>
+                                <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>
+                                    Content
+                                </Typography>
+                                <ReactQuill
+                                    value={content}
+                                    onChange={newValue=>setContent(newValue)}
+                                    modules={modules}
+                                    style={{
+                                        borderRadius: '8px',
+                                        border: '1px solid #ccc',
+                                        minHeight: '200px'
+                                    }}
+                                />
+                            </Box>
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    py: 1.5,
+                                    borderRadius: 2,
+                                    fontSize: '1rem',
+                                    fontWeight: 600,
+                                    textTransform: 'none',
+                                    transition: 'all 0.2s',
+                                    '&:hover': {
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: '0 6px 20px rgba(33, 150, 243, 0.3)',
+                                    },
+                                }}
+                            >
+                                Update Post
+                            </Button>
+                        </Box>
+                    </Paper>
+                </Box>
+            </Container>
+            <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
+                <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
+        </ThemeProvider>
+    );
 }

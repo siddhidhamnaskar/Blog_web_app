@@ -142,6 +142,26 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
             >
               {Summary}
             </Typography>
+
+            {/* Post Content Preview */}
+            {Content && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  lineHeight: 1.5,
+                  mb: 2,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: Content.length > 200 ? Content.substring(0, 200) + '...' : Content
+                }}
+              />
+            )}
           </CardContent>
 
           {/* Post Image */}
