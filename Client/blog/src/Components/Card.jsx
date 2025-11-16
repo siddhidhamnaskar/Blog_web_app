@@ -50,7 +50,7 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
           margin: "auto",
           marginTop: "20px",
           borderRadius: 2,
-          overflow: 'hidden',
+          
           border: '1px solid #e0e0e0',
         }}
       >

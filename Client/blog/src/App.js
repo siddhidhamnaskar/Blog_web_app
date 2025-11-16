@@ -32,7 +32,7 @@ export default function App() {
     <ResponsiveAppBar />
     <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f3f2ef' }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1, p: 3, maxWidth: 600 }}>
+      <Box sx={{ flexGrow: 2, p: 3, maxWidth: 600 }}>
         <div id='Container'>
           {load ? <CircularIndeterminate/>:  <div id="feedcontainer">
             {data.map((elem)=>{
