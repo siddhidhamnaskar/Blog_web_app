@@ -4,13 +4,19 @@ import { UserContext } from "../Components/Usercontext";
 import ResponsiveAppBar from "../Components/AppBar";
 import MediaCard from "../Components/Card";
 import CircularIndeterminate from "../Components/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function MyBlog(){
     const {userInfo,setUserInfo,image,setImage} =useContext(UserContext);
     const [data,setData]=useState([]);
     const [load,setLoad]=useState(false);
+    const navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
+        if (!userInfo.Name) {
+            navigate('/login');
+            return;
+        }
         var token=localStorage.getItem('token')||"";
 
         fetch(`${base_url}/profile`,{

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
@@ -34,6 +34,23 @@ const theme = createTheme({
 
 function Sidebar() {
   const { userInfo } = React.useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleCreatePost = () => {
+    if (!userInfo.Name) {
+      navigate('/login');
+    } else {
+      navigate('/createpost');
+    }
+  };
+
+  const handleMyBlogs = () => {
+    if (!userInfo.Name) {
+      navigate('/login');
+    } else {
+      navigate('/myBlogs');
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,10 +66,10 @@ function Sidebar() {
           overflowY: 'auto',
         }}
       >
-       
+
         <List>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/createpost">
+            <ListItemButton onClick={handleCreatePost}>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
@@ -60,7 +77,7 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/myBlogs">
+            <ListItemButton onClick={handleMyBlogs}>
               <ListItemIcon>
                 <BookmarkIcon />
               </ListItemIcon>

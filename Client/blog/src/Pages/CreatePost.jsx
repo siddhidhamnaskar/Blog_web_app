@@ -3,7 +3,7 @@ import { Paper, TextField, Typography} from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Components/Usercontext";
 import { base_url } from "../Sevices/API";
@@ -14,6 +14,12 @@ export default function CreatePost(){
    const [content,setContent]=useState("");
    const [file,setFile]=useState("");
    const navigate=useNavigate();
+
+   useEffect(() => {
+     if (!userInfo.Name) {
+       navigate('/login');
+     }
+   }, [userInfo, navigate]);
    const postData=(e)=>{
     e.preventDefault();
     let token=localStorage.getItem('token')||"";

@@ -205,11 +205,18 @@ function ResponsiveAppBar() {
                   Home
                 </Link>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to="/myBlogs" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+              <MenuItem onClick={() => {
+                handleCloseNavMenu();
+                if (!userInfo.Name) {
+                  navigate('/login');
+                } else {
+                  navigate('/myBlogs');
+                }
+              }}>
+                <div style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
                   <PeopleIcon sx={{ mr: 1 }} />
                   My Blogs
-                </Link>
+                </div>
               </MenuItem>
             </Menu>
           </Box>
