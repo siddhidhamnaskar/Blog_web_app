@@ -7,7 +7,8 @@ const postSchema=new Schema({
     Summary:{type:"String",required:true},
     img:{type:"String",required:true},
     Content:{type:"String",required:true},
-    Author:{type:Schema.Types.ObjectId,ref:'User'}
+    Author:{type:Schema.Types.ObjectId,ref:'User'},
+    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 },{
     timestamps:true
 })

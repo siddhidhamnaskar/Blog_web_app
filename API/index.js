@@ -322,6 +322,40 @@ app.get("/myBlogs/",async(req,res)=>{
   }
 })
 
+app.post("/blogs/:id/like", async (req, res) => {
+  try {
+    let token = req.body.token;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) throw err;
+      const post = await Post.findById(req.params.id);
+      if (!post) return res.status(404).json("Post not found");
+      if (!post.likes.includes(info.id)) {
+        post.likes.push(info.id);
+        await post.save();
+      }
+      res.status(200).json(post);
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.post("/blogs/:id/unlike", async (req, res) => {
+  try {
+    let token = req.body.token;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) throw err;
+      const post = await Post.findById(req.params.id);
+      if (!post) return res.status(404).json("Post not found");
+      post.likes = post.likes.filter(id => id.toString() !== info.id);
+      await post.save();
+      res.status(200).json(post);
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 app.listen(PORT,()=>{
     try{

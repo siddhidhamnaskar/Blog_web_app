@@ -15,7 +15,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { UserContext } from './Usercontext';
-import { base_url } from '../Sevices/API';
+import { base_url, likePost, unlikePost } from '../Sevices/API';
 
 const theme = createTheme({
   palette: {
@@ -31,10 +31,10 @@ const theme = createTheme({
   },
 });
 
-export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id}) {
+export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt,Author,_id, likes: initialLikes = []}) {
   const { userInfo } = useContext(UserContext);
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(initialLikes.length);
   const [authorImage, setAuthorImage] = useState('');
 
   useEffect(() => {
@@ -50,11 +50,31 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
           console.log('Error fetching author image:', err);
         });
     }
-  }, [Author?._id]);
+    // Check if current user has liked this post
+    if (userInfo?.id && initialLikes.includes(userInfo.id)) {
+      setLiked(true);
+    }
+  }, [Author?._id, userInfo?.id, initialLikes]);
 
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
+  const handleLike = async () => {
+    const token=localStorage.getItem("token");
+    if (!token) {
+      alert('Please login to like posts');
+      return;
+    }
+    try {
+      if (liked) {
+        await unlikePost(_id, token);
+        setLiked(false);
+        setLikes(likes - 1);
+      } else {
+        await likePost(_id,token);
+        setLiked(true);
+        setLikes(likes + 1);
+      }
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
   };
 
   return (
