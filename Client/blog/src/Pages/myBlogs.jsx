@@ -13,10 +13,12 @@ export default function MyBlog(){
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userInfo.Name) {
-            navigate('/login');
-            return;
-        }
+      if (!userInfo.Name) {
+        navigate("/login");
+      }
+    }, [userInfo, navigate]);
+
+    useEffect(()=>{
         var token=localStorage.getItem('token')||"";
 
         fetch(`${base_url}/profile`,{

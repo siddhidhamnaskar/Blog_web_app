@@ -36,19 +36,19 @@ function Sidebar() {
   const { userInfo } = React.useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleCreatePost = () => {
+  const handleCreatePostClick = () => {
     if (!userInfo.Name) {
-      navigate('/login');
+      navigate("/login");
     } else {
-      navigate('/createpost');
+      navigate("/createpost");
     }
   };
 
-  const handleMyBlogs = () => {
+  const handleMyBlogsClick = () => {
     if (!userInfo.Name) {
-      navigate('/login');
+      navigate("/login");
     } else {
-      navigate('/myBlogs');
+      navigate("/myBlogs");
     }
   };
 
@@ -66,10 +66,10 @@ function Sidebar() {
           overflowY: 'auto',
         }}
       >
-
+       
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleCreatePost}>
+            <ListItemButton onClick={handleCreatePostClick}>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
@@ -77,7 +77,7 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleMyBlogs}>
+            <ListItemButton onClick={handleMyBlogsClick}>
               <ListItemIcon>
                 <BookmarkIcon />
               </ListItemIcon>

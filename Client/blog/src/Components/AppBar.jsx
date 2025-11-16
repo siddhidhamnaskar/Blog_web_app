@@ -97,7 +97,7 @@ function ResponsiveAppBar() {
          
          })
         
-       
+        
        
        })
        .catch((err)=>{
@@ -218,6 +218,19 @@ function ResponsiveAppBar() {
                   My Blogs
                 </div>
               </MenuItem>
+              <MenuItem onClick={() => {
+                handleCloseNavMenu();
+                if (!userInfo.Name) {
+                  navigate('/login');
+                } else {
+                  navigate('/createpost');
+                }
+              }}>
+                <div style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                  <WorkIcon sx={{ mr: 1 }} />
+                  Create Post
+                </div>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -271,7 +284,7 @@ function ResponsiveAppBar() {
           
             <Tooltip title="Open settings" style={{marginLeft:"30px"}}>
           
-            
+          
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 50, height: 50 }} />
           </IconButton>

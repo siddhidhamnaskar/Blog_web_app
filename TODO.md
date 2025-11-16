@@ -1,5 +1,1 @@
-- [x] Modify Sidebar.jsx to redirect to /login if user not logged in when clicking Create Post or My Blogs
-- [x] Modify AppBar.jsx mobile menu to redirect to /login if user not logged in when clicking My Blogs
-- [x] Add login check in CreatePost.jsx to redirect to /login if not logged in
-- [x] Add login check in myBlogs.jsx to redirect to /login if not logged in
-- [x] Modify CreatePost.jsx UI to resemble LinkedIn's post creation form
+- [x] Improve search UI: Add loading indicator, better styling, placeholder text, and responsive design
