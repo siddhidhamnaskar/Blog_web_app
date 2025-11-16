@@ -1,4 +1,4 @@
-import { Paper,Typography } from "@mui/material";
+import { Paper,Typography, Alert, Snackbar } from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect,useState } from "react";
@@ -14,7 +14,10 @@ export default function Details(){
     const {userInfo} =useContext(UserContext);
     const [elem,setElem]=useState("")
     const [image,setImage]=useState("")
-  
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('success');
+
   const {id} =useParams();
 
   const navigate=useNavigate();
@@ -48,10 +51,15 @@ export default function Details(){
     })
     .then((json)=>{
       console.log(json);
-      alert("Post Deleted");
-      navigate("/")
+      setAlertMessage("Post Deleted Successfully");
+      setAlertSeverity('success');
+      setAlertOpen(true);
+      setTimeout(() => navigate("/"), 2000);
     })
     .catch((err)=>{
+      setAlertMessage("Failed to Delete Post");
+      setAlertSeverity('error');
+      setAlertOpen(true);
       console.log("Error")
     })
   }
@@ -101,8 +109,11 @@ export default function Details(){
       <div dangerouslySetInnerHTML={{__html:elem.Content}}/>
 
     </Paper>
-
-      
+    <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
+      <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
 
     </>
 }

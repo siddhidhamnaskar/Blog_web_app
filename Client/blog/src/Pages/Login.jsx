@@ -1,5 +1,5 @@
 
-import { Paper, TextField, Typography, Button, Box, Container, Grid, Link as MuiLink, Avatar, InputAdornment } from "@mui/material";
+import { Paper, TextField, Typography, Button, Box, Container, Grid, Link as MuiLink, Avatar, InputAdornment, Alert, Snackbar } from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -30,6 +30,9 @@ export default function Login(){
   const  [disabled, setDisabled]=useState(true);
   const [load,setLoad]=useState(false);
   const navigate=useNavigate();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
 
   useEffect(()=>{
     if(user.Email.length>0 && user.Password.length>7)
@@ -60,15 +63,19 @@ export default function Login(){
        res.json().then((data)=>{
         localStorage.setItem('token',data);
         setLoad(false)
-        alert("Login Successfull");
-      navigate("/");
+        setAlertMessage("Login Successful");
+        setAlertSeverity('success');
+        setAlertOpen(true);
+        setTimeout(() => navigate("/"), 2000);
        })
 
      })
      .catch((err)=>{
 
       setLoad(false)
-      alert("Login Failed");
+      setAlertMessage("Login Failed");
+      setAlertSeverity('error');
+      setAlertOpen(true);
      })
 
   }
@@ -211,6 +218,11 @@ export default function Login(){
           </Paper>
         </Box>
       </Container>
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

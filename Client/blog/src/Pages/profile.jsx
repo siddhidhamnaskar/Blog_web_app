@@ -7,7 +7,7 @@ import Fab from '@mui/material/Fab';
 
 import EditIcon from '@mui/icons-material/Edit';
 
-import { AppBar, Paper } from '@mui/material';
+import { AppBar, Paper, Alert, Snackbar } from '@mui/material';
 import { base_url } from '../Sevices/API';
 import { UserContext } from '../Components/Usercontext';
 import ResponsiveAppBar from '../Components/AppBar';
@@ -17,6 +17,9 @@ export default function Profile() {
    const {userInfo,setUserInfo,image,setImage} =React.useContext(UserContext);
   const [file,setFile]=useState("");
   const [photo, setPhoto]=React.useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
   
 
   const hiddenFileInput = React.useRef(null);
@@ -78,39 +81,42 @@ export default function Profile() {
   const postImage=()=>{
     let token=localStorage.getItem('token')||"";
     const data=new FormData();
-  
+
     data.set('file',file[0]);
-    
+
     data.set('token',token);
 
     // console.log(token);
     fetch(`${base_url}/photo`,{
       method:"POST",
        body:data,
-     
+
 
     })
     .then((res)=>{
-      alert("Successfully Updated");
-     
-       
+      setAlertMessage("Successfully Updated");
+      setAlertSeverity('success');
+      setAlertOpen(true);
+
     })
     .catch((err)=>{
+      setAlertMessage("Update Failed");
+      setAlertSeverity('error');
+      setAlertOpen(true);
       console.log('error');
     })
   }
 
-  return <> 
+  return <>
+    <ResponsiveAppBar/>
 
-  <ResponsiveAppBar/>
-   
     <div className='profileContainer' direction="row" spacing={2}>
         <Paper className='profilePaper' elevation={20}>
           <div>
-      {photo ?  <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 300, height: 300 }} />: <Avatar alt="Remy Sharp" src={image}   sx={{ width: 300, height: 300 }} />} 
+      {photo ?  <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 300, height: 300 }} />: <Avatar alt="Remy Sharp" src={image}   sx={{ width: 300, height: 300 }} />}
       <Fab className='editIcon'  onClick={handleClick} color="secondary" aria-label="edit">
-        <EditIcon  />
-     
+        <EditIcon />
+
       </Fab>
       <input type='file'  ref={hiddenFileInput}
         onChange={handleChange}
@@ -118,8 +124,12 @@ export default function Profile() {
         </div>
         <Button variant="contained" onClick={postImage}>Save</Button>
         </Paper>
-        
-    
+
     </div>
+    <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
+      <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
     </>
 }

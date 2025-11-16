@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Paper, TextField, Typography} from "@mui/material";
+import { Paper, TextField, Typography, Alert, Snackbar} from "@mui/material";
 import ResponsiveAppBar from "../Components/AppBar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -15,6 +15,9 @@ export default function EditPost(){
    const [content,setContent]=useState("");
    const [file,setFile]=useState("");
    const navigate=useNavigate();
+   const [alertOpen, setAlertOpen] = useState(false);
+   const [alertMessage, setAlertMessage] = useState('');
+   const [alertSeverity, setAlertSeverity] = useState('success');
 
    useEffect(()=>{
 
@@ -52,12 +55,16 @@ export default function EditPost(){
 
       })
       .then((res)=>{
-        alert("Created Succesfully");
-        navigate("/");
-         
+        setAlertMessage("Updated Successfully");
+        setAlertSeverity('success');
+        setAlertOpen(true);
+        setTimeout(() => navigate("/"), 2000);
+
       })
       .catch((err)=>{
-        alert("Please Enter Required Field");
+        setAlertMessage("Please Enter Required Field");
+        setAlertSeverity('error');
+        setAlertOpen(true);
       })
    }
     const inputstyle={
@@ -139,7 +146,11 @@ export default function EditPost(){
           <button  style={{width:"90%",margin:"auto",backgroundColor:"grey",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}}>SUBMIT</button>
         </form>
     </Paper>
-
+    <Snackbar open={alertOpen} autoHideDuration={6000} onClose={() => setAlertOpen(false)}>
+      <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+        {alertMessage}
+      </Alert>
+    </Snackbar>
 
     </>
     
