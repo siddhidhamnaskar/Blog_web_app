@@ -15,6 +15,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { UserContext } from './Usercontext';
+import { base_url } from '../Sevices/API';
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,22 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
   const { userInfo } = useContext(UserContext);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [authorImage, setAuthorImage] = useState('');
+
+  useEffect(() => {
+    if (Author?._id) {
+      fetch(`${base_url}/photo/?Author=${Author._id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.img) {
+            setAuthorImage(data.img);
+          }
+        })
+        .catch((err) => {
+          console.log('Error fetching author image:', err);
+        });
+    }
+  }, [Author?._id]);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -64,7 +81,7 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
           <CardContent sx={{ pb: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Avatar
-                src={Author?.avatar || `data:image/png;base64,${userInfo?.image || ''}`}
+                src={authorImage || Author?.img || userInfo?.image || ''}
                 sx={{ width: 48, height: 48, mr: 2 }}
               />
               <Box sx={{ flexGrow: 1 }}>

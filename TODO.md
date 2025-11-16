@@ -1,1 +1,4 @@
-- [x] Improve search UI: Add loading indicator, better styling, placeholder text, and responsive design
+- [x] Modify Card.jsx to fetch author's profile image using Author._id
+- [x] Add state for authorImage in Card.jsx
+- [x] Add useEffect to fetch photo from API when Author changes
+- [x] Update Avatar src to use authorImage or fallback to userInfo.image

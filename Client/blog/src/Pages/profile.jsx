@@ -44,11 +44,9 @@ export default function Profile() {
         })
         .then((json)=>{
        
-         const base64String = btoa(new Uint8Array(json.img.data.data).reduce(function (data, byte) {
-           return data + String.fromCharCode(byte);
-       }, ''));
+       
      
-          setPhoto(base64String);
+          setPhoto(json.img);
           
         })
         .catch((err)=>{
