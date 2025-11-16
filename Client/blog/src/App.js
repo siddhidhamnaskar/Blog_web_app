@@ -45,7 +45,7 @@ export default function App() {
       <Box sx={{ width: 300, p: 3, display: { xs: 'none', lg: 'block' } }}>
         <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
           <Typography variant="h6" gutterBottom>
-            LinkedIn News
+            News
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Placeholder for news and updates

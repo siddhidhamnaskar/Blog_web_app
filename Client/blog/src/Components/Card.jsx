@@ -75,9 +75,9 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
                   {formatISO9075(new Date(createdAt))} • Public
                 </Typography>
               </Box>
-              <IconButton size="small">
+              {/* <IconButton size="small">
                 <MoreHorizIcon />
-              </IconButton>
+              </IconButton> */}
             </Box>
 
             {/* Post Title */}
@@ -134,22 +134,22 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
                 {likes} Like{likes !== 1 ? 's' : ''}
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <IconButton size="small" component={Link} to={`/details/${_id}`}>
                 <CommentIcon />
               </IconButton>
               <Typography variant="body2" sx={{ ml: 1 }}>
                 Comment
               </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            </Box> */}
+            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <IconButton size="small">
                 <ShareIcon />
               </IconButton>
               <Typography variant="body2" sx={{ ml: 1 }}>
                 Share
               </Typography>
-            </Box>
+            </Box> */}
           </CardActions>
         </Card>
       </Paper>

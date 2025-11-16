@@ -149,7 +149,7 @@ function ResponsiveAppBar() {
       }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <LinkedInIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }} />
+            {/* <LinkedInIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.1)' } }} /> */}
             <Typography
               variant="h6"
               noWrap
@@ -233,7 +233,7 @@ function ResponsiveAppBar() {
           </Typography>
 
           {/* LinkedIn-style navigation icons */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
             <IconButton color="inherit" component={Link} to="/">
               <HomeIcon />
             </IconButton>
@@ -249,12 +249,12 @@ function ResponsiveAppBar() {
             <IconButton color="inherit">
               <NotificationsIcon />
             </IconButton>
-          </Box>
+          </Box> */}
 
           {userInfo.Name ? <FreeSolo/>:null}
           
         
-          <Box sx={{ flexGrow: 0 }} >
+          <Box sx={{ flexGrow: 1,display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }} >
              {!userInfo.Name ? <>
             <Link to="/login" style={{fontSize:"15px", fontWeight:"bold",textDecoration:"none",marginRight:"30px",color: 'inherit'}} >Login</Link>   
          
