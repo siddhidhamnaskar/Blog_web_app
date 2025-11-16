@@ -32,25 +32,35 @@ export default function Signup(){
     const navigate=useNavigate();
 
     const register=()=>{
-      try{
-        fetch(`${base_url}/signup`,{
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify(userData)
-        }).then ((res)=>{
+      fetch(`${base_url}/signup`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(userData)
+      }).then ((res)=>{
+        if (res.ok) {
           setAlertMessage("Registration Successful");
           setAlertSeverity('success');
           setAlertOpen(true);
           setTimeout(() => navigate("/login"), 2000);
-        })
-      }
-      catch(err){
-        setAlertMessage("Registration Failed");
+        } else {
+          res.json().then((errorData) => {
+            setAlertMessage(errorData.message || errorData || "Registration Failed");
+            setAlertSeverity('error');
+            setAlertOpen(true);
+          }).catch(() => {
+            setAlertMessage("Registration Failed");
+            setAlertSeverity('error');
+            setAlertOpen(true);
+          });
+        }
+      })
+      .catch(err=>{
+        setAlertMessage("Network Error: Registration Failed");
         setAlertSeverity('error');
         setAlertOpen(true);
-      }
+      })
     }
 
     const handleInput=(e)=>{

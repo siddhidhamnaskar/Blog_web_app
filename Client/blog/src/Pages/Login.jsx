@@ -60,20 +60,33 @@ export default function Login(){
 
      })
      .then((res)=>{
-       res.json().then((data)=>{
-        localStorage.setItem('token',data);
-        setLoad(false)
-        setAlertMessage("Login Successful");
-        setAlertSeverity('success');
-        setAlertOpen(true);
-        setTimeout(() => navigate("/"), 2000);
-       })
+       if (res.ok) {
+         res.json().then((data)=>{
+          localStorage.setItem('token',data);
+          setLoad(false)
+          setAlertMessage("Login Successful");
+          setAlertSeverity('success');
+          setAlertOpen(true);
+          setTimeout(() => navigate("/"), 2000);
+         })
+       } else {
+         res.json().then((errorData) => {
+           setLoad(false)
+           setAlertMessage(errorData.message || errorData || "Login Failed");
+           setAlertSeverity('error');
+           setAlertOpen(true);
+         }).catch(() => {
+           setLoad(false)
+           setAlertMessage("Login Failed");
+           setAlertSeverity('error');
+           setAlertOpen(true);
+         });
+       }
 
      })
      .catch((err)=>{
-
       setLoad(false)
-      setAlertMessage("Login Failed");
+      setAlertMessage("Network Error: Login Failed");
       setAlertSeverity('error');
       setAlertOpen(true);
      })
