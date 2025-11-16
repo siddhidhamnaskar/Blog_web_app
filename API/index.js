@@ -142,7 +142,7 @@ app.post("/post" ,upload.single("file"),async(req,res)=>{
       } // optional folder
       );
 
-      console.log(response);
+      // console.log(response);
 
       // console.log(res.secure_url);
       urls.push(response.secure_url);
@@ -173,15 +173,27 @@ app.post("/post" ,upload.single("file"),async(req,res)=>{
 app.post('/photo',upload.single('file'),async(req,res)=>{
   try{
     let token=req.body.token;
+     const urls=[];
+     const fileStr = req.file.buffer.toString("base64");
+    //  console.log(req.body);
  
     jwt.verify(token ,secret,{},async(err,info)=>{
         if(err) throw err;
       
-        const {path}=req.file;
-        const result=await cloudinary.uploader.upload(path)
+       const response = await cloudinary.uploader.upload(
+      `data:${req.file.mimetype};base64,${fileStr}`,
+      { folder: "uploads" ,
+        resource_type: "auto",
+      } // optional folder
+      );
+
+      // console.log(response);
+
+      // console.log(res.secure_url);
+      urls.push(response.secure_url);
         const photo=new Photos({
          
-          img:result.secure_url,
+          img:response.secure_url,
       
           Author:info.id
         })
@@ -192,6 +204,7 @@ app.post('/photo',upload.single('file'),async(req,res)=>{
 
   }
   catch(err){
+    console.log(err);
     res.status(505).json(err);
 
   }

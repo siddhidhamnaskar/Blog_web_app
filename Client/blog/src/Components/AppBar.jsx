@@ -85,12 +85,10 @@ function ResponsiveAppBar() {
          })
          .then((json)=>{
         
-          const base64String = btoa(new Uint8Array(json.img.data.data).reduce(function (data, byte) {
-            return data + String.fromCharCode(byte);
-        }, ''));
+         
       
-           setPhoto(base64String);
-           setImage(base64String);
+           setPhoto(json.img);
+           setImage(json.img);
          })
          .catch((err)=>{
           console.log("Error");
@@ -286,7 +284,7 @@ function ResponsiveAppBar() {
           
           
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 50, height: 50 }} />
+          <Avatar alt="Remy Sharp" src={photo}   sx={{ width: 50, height: 50 }} />
           </IconButton>
         </Tooltip>
         <Menu
