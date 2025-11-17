@@ -75,7 +75,7 @@ http://localhost:3000
 
 ## 📸 Screenshots
 
-(Add screenshots here when available)
+![Homepage Screenshot](https://res.cloudinary.com/dguer2ngx/image/upload/v1763358955/Images/17.11.2025_11.19.26_REC_utzdiy.png)
 
 ---
 
