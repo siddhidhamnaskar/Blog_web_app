@@ -168,7 +168,7 @@ export default function MediaCard({Title,Summary,Content,img,createdAt,updatedAt
           {img && (
             <CardMedia
               component="img"
-              height="300"
+              height={{ xs: 200, sm: 250, md: 300 }}
               image={img}
               alt={Title}
               sx={{
