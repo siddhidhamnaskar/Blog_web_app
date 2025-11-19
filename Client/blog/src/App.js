@@ -32,13 +32,21 @@ export default function App() {
     <ResponsiveAppBar />
     <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f3f2ef' }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 2, p: 3, maxWidth: 600 }}>
+      <Box sx={{ flexGrow: 2, p: 3, maxWidth: 600, mx: { xs: 'auto', md: 'auto' } }}>
         <div id='Container'>
-          {load ? <CircularIndeterminate/>:  <div id="feedcontainer">
-            {data.map((elem)=>{
-              return <MediaCard key={elem._id} {...elem}/>
-            })}
-          </div>}
+          {load ? <CircularIndeterminate/>: data.length === 0 ? (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <Typography variant="h6" color="text.secondary">
+                No blogs found
+              </Typography>
+            </Box>
+          ) : (
+            <div id="feedcontainer">
+              {data.map((elem)=>{
+                return <MediaCard key={elem._id} {...elem}/>
+              })}
+            </div>
+          )}
         </div>
       </Box>
       {/* Right Sidebar Placeholder */}
