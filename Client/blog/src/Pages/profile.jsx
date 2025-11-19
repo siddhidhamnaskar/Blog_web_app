@@ -113,7 +113,7 @@ export default function Profile() {
     <div className='profileContainer' direction="row" spacing={2}>
         <Paper className='profilePaper' elevation={20}>
           <div>
-      {photo ?  <Avatar alt="Remy Sharp" src={`data:image/png;base64,${photo}`}   sx={{ width: 300, height: 300 }} />: <Avatar alt="Remy Sharp" src={image}   sx={{ width: 300, height: 300 }} />}
+      {photo ?  <Avatar alt="Remy Sharp" src={photo}   sx={{ width: 300, height: 300 }} />: <Avatar alt="Remy Sharp" src={image}   sx={{ width: 300, height: 300 }} />}
       <Fab className='editIcon'  onClick={handleClick} color="secondary" aria-label="edit">
         <EditIcon />
 
