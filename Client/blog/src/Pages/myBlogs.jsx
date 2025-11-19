@@ -39,6 +39,7 @@ export default function MyBlog(){
     }, [userInfo, navigate]);
 
     useEffect(()=>{
+        setLoad(true);
         var token=localStorage.getItem('token')||"";
 
         fetch(`${base_url}/profile`,{
@@ -47,12 +48,13 @@ export default function MyBlog(){
               "Content-type":"application/json"
             },
             body:JSON.stringify({'token':token}),
-         
-       
+
+
+
            })
            .then((res)=>{
               res.json().then((info)=>{
-                 
+
                setUserInfo(info);
                fetch(`${base_url}/myBlogs/?Author=${info.id}`)
                .then((res)=>{
@@ -61,12 +63,17 @@ export default function MyBlog(){
                  })
                  .then((json)=>{
                     // console.log(json)
-                   setData(json)
+                   setData(json);
+                   setLoad(false);
                  })
                 })
            })
-           
-          
+           .catch((err)=>{
+               console.log(err);
+               setLoad(false);
+           })
+
+
 
     },[])
 
