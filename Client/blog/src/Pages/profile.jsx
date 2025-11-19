@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Fab from '@mui/material/Fab';
 
@@ -20,7 +21,7 @@ export default function Profile() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState('success');
-  
+  const [loading, setLoading] = useState(false);
 
   const hiddenFileInput = React.useRef(null);
 
@@ -79,6 +80,7 @@ export default function Profile() {
   }
 
   const postImage=()=>{
+    setLoading(true);
     let token=localStorage.getItem('token')||"";
     const data=new FormData();
 
@@ -97,12 +99,14 @@ export default function Profile() {
       setAlertMessage("Successfully Updated");
       setAlertSeverity('success');
       setAlertOpen(true);
+      setLoading(false);
 
     })
     .catch((err)=>{
       setAlertMessage("Update Failed");
       setAlertSeverity('error');
       setAlertOpen(true);
+      setLoading(false);
       console.log('error');
     })
   }
@@ -122,7 +126,9 @@ export default function Profile() {
         onChange={handleChange}
        style={{display:"none"}} ></input>
         </div>
-        <Button variant="contained" onClick={postImage}>Save</Button>
+        <Button variant="contained" onClick={postImage} disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Save'}
+        </Button>
         </Paper>
 
     </div>
