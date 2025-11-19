@@ -95,7 +95,7 @@ export default function Playground() {
 
 
   return (
-    <Stack spacing={1} sx={{ width: { xs: 250, sm: 300 } }}>
+    <Stack spacing={1} sx={{ width: { xs: 200, sm: 250, md: 300 } }}>
       <Autocomplete
         id="author-search"
         options={allAuthors}

@@ -229,6 +229,20 @@ function ResponsiveAppBar() {
                   Create Post
                 </div>
               </MenuItem>
+              {!userInfo.Name && (
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Link to="/login" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                      Login
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Link to="/signup" style={{ fontSize: '15px', fontWeight: "bold", textDecoration: "none", display: 'flex', alignItems: 'center' }}>
+                      Register
+                    </Link>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
           <Typography
@@ -249,6 +263,11 @@ function ResponsiveAppBar() {
           >
             BLOG APP
           </Typography>
+          {userInfo.Name && (
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, display: { xs: 'flex', md: 'none' } }}>
+              <Avatar alt="Remy Sharp" src={photo} sx={{ width: 40, height: 40 }} />
+            </IconButton>
+          )}
 
           {/* LinkedIn-style navigation icons */}
           {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
@@ -284,7 +303,7 @@ function ResponsiveAppBar() {
           
           
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src={photo}   sx={{ width: 50, height: 50 }} />
+          <Avatar alt="Remy Sharp" src={photo}   sx={{ width: { xs: 40, md: 50 }, height: { xs: 40, md: 50 } }} />
           </IconButton>
         </Tooltip>
         <Menu
