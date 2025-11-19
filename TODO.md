@@ -1,7 +1,6 @@
-# TODO: Move all alerts to top center
+# TODO: Fix AppBar alignment for all screen sizes
 
-- [x] Update Snackbar in Client/blog/src/Pages/Login.jsx to add anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-- [x] Update Snackbar in Client/blog/src/Pages/Signup.jsx to add anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-- [x] Update Snackbar in Client/blog/src/Pages/CreatePost.jsx to add anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-- [x] Update Snackbar in Client/blog/src/Pages/EditPost.jsx to add anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-- [x] Verify that Client/blog/src/Components/AppBar.jsx already has top center (already done)
+- [x] Analyze current responsive design in AppBar.jsx
+- [x] Adjust spacing and flex properties for tablet (sm) and mobile (xs) breakpoints
+- [x] Ensure elements are centered or properly spaced on all screen sizes
+- [ ] Test alignment on different screen sizes

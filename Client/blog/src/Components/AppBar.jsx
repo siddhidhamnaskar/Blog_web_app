@@ -263,11 +263,7 @@ function ResponsiveAppBar() {
           >
             BLOG APP
           </Typography>
-          {userInfo.Name && (
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, display: { xs: 'flex', md: 'none' } }}>
-              <Avatar alt="Remy Sharp" src={photo} sx={{ width: 40, height: 40 }} />
-            </IconButton>
-          )}
+        
 
           {/* LinkedIn-style navigation icons */}
           {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
@@ -288,7 +284,13 @@ function ResponsiveAppBar() {
             </IconButton>
           </Box> */}
 
-          {userInfo.Name ? <FreeSolo/>:null}
+          {userInfo.Name ? <FreeSolo /> : null}
+
+          {userInfo.Name && (
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, display: { xs: 'flex', md: 'none' }, ml: 1 }}>
+              <Avatar alt="Remy Sharp" src={photo} sx={{ width: { xs: 32, sm: 36 }, height: { xs: 32, sm: 36 } }} />
+            </IconButton>
+          )}
           
         
           <Box sx={{ flexGrow: 1,display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }} >

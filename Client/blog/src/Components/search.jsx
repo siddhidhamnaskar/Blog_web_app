@@ -102,7 +102,7 @@ export default function Playground() {
         renderInput={params => (
           <TextField
             {...params}
-           
+
             variant="outlined"
             placeholder="Search by Author"
             InputProps={{
@@ -127,6 +127,7 @@ export default function Playground() {
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                height: { xs: 40, sm: 44, md: 48 },
                 '&:hover': {
                   backgroundColor: 'rgba(255, 255, 255, 1)',
                 },
